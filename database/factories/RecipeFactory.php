@@ -15,6 +15,7 @@ class RecipeFactory extends Factory {
             'slug' => $slug,
             'email' => fake()->email(),
             'description' => $this->faker->text(1000),
+            'published_at' => fake()->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

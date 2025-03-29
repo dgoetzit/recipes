@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('slug');
             $table->text('description');
             $table->text('email');
+            $table->datetime('published_at')->nullable();
             $table->timestamps();
         });
 

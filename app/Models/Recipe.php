@@ -10,6 +10,10 @@ class Recipe extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
+
     public function ingredients(): BelongsToMany
     {
         return $this->belongsToMany(Ingredient::class);
@@ -18,5 +22,4 @@ class Recipe extends Model
     {
         return $this->hasMany(Step::class);
     }
-
 }

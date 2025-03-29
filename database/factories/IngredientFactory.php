@@ -6,21 +6,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class IngredientFactory extends Factory
 {
-
-    public function definition()
+    public function definition(): array
     {
-        $name = fake()->text(120);
-
         return [
-            'name' => $name,
+            'name' => fake()->words(nb: 3, asText: true),
         ];
-    }
-
-    public function amount()
-    {
-    }
-
-    public function unit()
-    {
     }
 }

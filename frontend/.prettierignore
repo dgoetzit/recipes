@@ -1,0 +1,6 @@
+.env*
+.nuxt
+.output
+server
+node_modules
+package-lock.json

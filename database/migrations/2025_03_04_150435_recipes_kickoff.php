@@ -18,7 +18,10 @@ return new class extends Migration
             $table->string('slug');
             $table->text('description');
             $table->text('email');
+            $table->string('image')->nullable();
+            $table->string('image_alt')->nullable();
             $table->datetime('published_at')->nullable();
+            $table->integer('views')->default(0);
             $table->timestamps();
         });
 

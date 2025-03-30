@@ -16,7 +16,7 @@
                     id="search-heading"
                     class="sr-only"
                 >
-                    Search Bars
+                    Search Inputs
                 </h2>
                 <div class="relative col-start-1 row-start-1 py-4">
                     <div class="mx-auto flex max-w-7xl justify-between px-4 text-sm sm:px-6 lg:px-8">
@@ -25,6 +25,7 @@
                             type="text"
                             label="Author Email"
                             placeholder="Search by author email"
+                            :value="state.search.email"
                             @search-updated="handleSearchUpdated"
                         ></Search>
 
@@ -33,6 +34,7 @@
                             type="text"
                             label="Keyword"
                             placeholder="Search by recipe keyword"
+                            :value="state.search.keyword"
                             @search-updated="handleSearchUpdated"
                         ></Search>
 
@@ -41,102 +43,161 @@
                             type="text"
                             label="Ingredient"
                             placeholder="Search by an ingredient"
+                            :value="state.search.ingredient"
                             @search-updated="handleSearchUpdated"
                         ></Search>
                     </div>
                 </div>
             </Disclosure>
 
-            <!-- Product grid -->
-            <RecipeGrid :recipes="recipes" />
+            <div
+                v-if="state.loading"
+                class="flex justify-center py-12"
+            >
+                <UiStatesLoading />
+            </div>
 
-            <!-- TODO move this to a better logical location - Pagination -->
-            <!-- <NavigationPagination
-                :current-page="currentPage"
-                :last-page="lastPage"
-                :next-page-url="nextPageUrl"
-                :prev-page-url="prevPageUrl"
-                @page-change="handlePageChange"
-            /> -->
+            <div
+                v-else-if="state.error"
+                class="py-12 text-center"
+            >
+                <UiStatesError />
+            </div>
+
+            <div
+                v-else-if="isEmpty"
+                class="py-12 text-center"
+            >
+                <UiStatesEmpty
+                    emoji="🍽️"
+                    title="No recipes found"
+                    description="Try adjusting your search or check back later."
+                />
+            </div>
+
+            <!-- Recipe grid -->
+            <RecipeGrid
+                v-else
+                :recipes="state.recipes"
+            />
+
+            <!-- Pagination -->
+            <div
+                v-if="!state.loading && !state.error && state.recipes.length > 0"
+                class="mt-8"
+            >
+                <Pagination
+                    :current-page="state.pagination.currentPage"
+                    :last-page="state.pagination.lastPage"
+                    :next-page-url="state.pagination.nextPageUrl"
+                    :prev-page-url="state.pagination.prevPageUrl"
+                    :search-params="state.search"
+                    @page-change="handlePageChange"
+                />
+            </div>
         </main>
     </div>
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue';
+    import { ref, reactive, computed } from 'vue';
     import { Disclosure } from '@headlessui/vue';
 
-    // TODO introduce loading skeleton
+    const state = reactive({
+        loading: false,
+        error: null,
+        recipes: [],
+        pagination: {
+            currentPage: 1,
+            lastPage: 1,
+            nextPageUrl: null,
+            prevPageUrl: null,
+            total: 0,
+        },
+        search: {
+            email: '',
+            keyword: '',
+            ingredient: '',
+        },
+    });
 
-    const config = useRuntimeConfig();
-    const baseApiEndpoint = config.public.apiEndpoint;
-    const apiEndpoint = `${baseApiEndpoint}/recipes`;
+    const hasRecipes = computed(() => state.recipes.length > 0);
+    const isEmpty = computed(() => !state.loading && hasRecipes.value === false);
 
-    const recipes = ref([]);
-    const currentPage = ref(1);
-    const lastPage = ref(1);
-    const nextPageUrl = ref(null);
-    const prevPageUrl = ref(null);
-    const total = ref(0);
+    const { data: initialData, error: initialError } = await useFetch('/api/recipes');
 
-    const { data: initialData, state, error } = await useFetch('/api/recipes');
+    const processRecipeData = (data) => {
+        if (!data) return;
 
-    const renderRecipes = (paginationData) => {
-        if (!paginationData) {
-            return;
+        state.recipes = data.data || [];
+
+        if (data.current_page) {
+            state.pagination = {
+                currentPage: data.current_page || 1,
+                lastPage: data.last_page || 1,
+                nextPageUrl: data.next_page_url,
+                prevPageUrl: data.prev_page_url,
+                total: data.total || 0,
+            };
+        } else if (data.data && data.data.current_page) {
+            state.recipes = data.data.data || [];
+            state.pagination = {
+                currentPage: data.data.current_page || 1,
+                lastPage: data.data.last_page || 1,
+                nextPageUrl: data.data.next_page_url,
+                prevPageUrl: data.data.prev_page_url,
+                total: data.data.total || 0,
+            };
         }
-
-        let data = paginationData.data;
-
-        console.log('renderRecipes', data);
-
-        // TODO empty state
-        recipes.value = data.data || [];
-        currentPage.value = data.current_page || 1;
-        lastPage.value = data.last_page || 1;
-        nextPageUrl.value = data.next_page_url;
-        prevPageUrl.value = data.prev_page_url;
-        total.value = data.total || 0;
     };
 
-    renderRecipes(initialData.value);
+    if (initialData.value) {
+        processRecipeData(initialData.value);
+    } else if (initialError.value) {
+        state.error = initialError.value;
+        console.error('Error loading initial recipes:', initialError.value);
+    }
 
-    const handlePageChange = async (url) => {
-        await fetchRecipes(url);
+    const fetchRecipes = async (page = 1) => {
+        state.loading = true;
+        state.error = null;
 
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
-    const searchEmail = ref('');
-    const searchKeyword = ref('');
-    const searchIngredient = ref('');
-
-    const fetchRecipes = async () => {
         try {
             const response = await $fetch('/api/recipes', {
                 method: 'GET',
                 query: {
-                    email: searchEmail.value,
-                    keyword: searchKeyword.value,
-                    ingredient: searchIngredient.value,
+                    ...state.search,
+                    page,
                 },
             });
 
-            renderRecipes({ data: response.data });
+            processRecipeData(response);
         } catch (error) {
+            state.error = error;
             console.error('Error fetching recipes:', error);
+        } finally {
+            state.loading = false;
         }
     };
 
-    function handleSearchUpdated(identifier, value) {
-        if (identifier === 'author-email') {
-            searchEmail.value = value;
-        } else if (identifier === 'keyword') {
-            searchKeyword.value = value;
-        } else if (identifier === 'ingredient') {
-            searchIngredient.value = value;
+    const handleSearchUpdated = (identifier, value) => {
+        switch (identifier) {
+            case 'author-email':
+                state.search.email = value;
+                break;
+            case 'keyword':
+                state.search.keyword = value;
+                break;
+            case 'ingredient':
+                state.search.ingredient = value;
+                break;
         }
 
-        fetchRecipes(apiEndpoint);
-    }
+        fetchRecipes(1);
+    };
+
+    const handlePageChange = async (pageNumber) => {
+        await fetchRecipes(pageNumber);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 </script>

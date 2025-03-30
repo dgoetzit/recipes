@@ -106,11 +106,8 @@
     import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue';
 
     const route = useRoute();
-    const config = useRuntimeConfig();
-    const baseApiEndpoint = config.public.apiEndpoint;
-    const apiEndpoint = `${baseApiEndpoint}/recipes/${route.params.slug}`;
-
-    const { data: recipe } = await useFetch(`${apiEndpoint}`, {
+    const slug = route.params.slug;
+    const { data: recipe, error } = await useFetch(`/api/recipes/${slug}`, {
         transform: (response) => {
             return response.data;
         },

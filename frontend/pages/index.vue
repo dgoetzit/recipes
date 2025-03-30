@@ -25,7 +25,8 @@
                             type="text"
                             label="Author Email"
                             placeholder="Search by author email"
-                            :value="state.search.email"
+                            :model-value="state.search.email"
+                            :validation-rules="['email']"
                             @search-updated="handleSearchUpdated"
                         ></Search>
 
@@ -34,7 +35,8 @@
                             type="text"
                             label="Keyword"
                             placeholder="Search by recipe keyword"
-                            :value="state.search.keyword"
+                            :model-value="state.search.keyword"
+                            :validation-rules="['minLength:2']"
                             @search-updated="handleSearchUpdated"
                         ></Search>
 
@@ -43,7 +45,8 @@
                             type="text"
                             label="Ingredient"
                             placeholder="Search by an ingredient"
-                            :value="state.search.ingredient"
+                            :model-value="state.search.ingredient"
+                            :validation-rules="['minLength:2']"
                             @search-updated="handleSearchUpdated"
                         ></Search>
                     </div>

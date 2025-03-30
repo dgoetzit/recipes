@@ -4,27 +4,31 @@
 
         <ul
             role="list"
-            class="-mb-8 divide-y divide-gray-100"
+            class="divide-y divide-gray-100 py-2"
         >
             <li
                 v-for="(step, stepIdx) in steps"
                 :key="step.id"
+                class="rounded-lg transition-colors duration-150"
             >
-                <div class="relative pb-8">
+                <div class="relative px-2 pt-4 pb-6">
                     <span
                         v-if="stepIdx !== steps.length - 1"
-                        class="absolute top-4 left-4 -ml-px h-full w-0.5"
+                        class="absolute top-8 left-4 -ml-px h-full w-0.5 bg-sky-100"
                         aria-hidden="true"
                     />
-                    <div class="relative flex space-x-3">
+                    <div class="relative flex space-x-4">
                         <div>
-                            <span class="flex size-8 items-center justify-center rounded-full ring-8 ring-white">
+                            <span
+                                class="flex size-8 items-center justify-center rounded-full bg-sky-50 text-sm font-semibold text-sky-700 ring-4 ring-white"
+                                :class="{ 'bg-sky-100': stepIdx === 0 }"
+                            >
                                 {{ step.step_number }}
                             </span>
                         </div>
                         <div class="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                             <div>
-                                <p class="text-sm text-gray-500">
+                                <p class="text-sm leading-relaxed text-gray-700">
                                     {{ step.description }}
                                 </p>
                             </div>

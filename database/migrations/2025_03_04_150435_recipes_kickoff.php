@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,6 +24,8 @@ return new class extends Migration
             $table->string('image_alt')->nullable();
             $table->datetime('published_at')->nullable();
             $table->integer('views')->default(0);
+            $table->integer('rating')->default(0);
+            $table->integer('reviews')->default(0);
             $table->timestamps();
         });
 

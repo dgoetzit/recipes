@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Http\Controllers\GetTopRecipesController;
 use App\Http\Controllers\RecipeController;
-use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/recipes/{recipe:slug}', [RecipeController::class, 'show']);
-Route::get('/recipes', [RecipeController::class, 'index']);
+Route::prefix('recipes')->name('recipes.')->group(function () {
+    Route::get('/', [RecipeController::class, 'index'])->name('index');
+    Route::get('/top', GetTopRecipesController::class)->name('top');
+    Route::get('/{recipe:slug}', [RecipeController::class, 'show'])->name('show');
+});

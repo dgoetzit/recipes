@@ -29,7 +29,7 @@
                             <NavigationElementsSearch class="ml-2" />
                         </div>
 
-                        <NavigationDesktop :navigation="navigation" />
+                        <NavigationDesktop />
 
                         <NavigationElementsLogo />
 

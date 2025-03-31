@@ -1,7 +1,8 @@
 <template>
     <Popover
         class="flex"
-        v-slot="{ open }"
+        v-slot="{ open, close }"
+        ref="popoverRef"
     >
         <div class="relative flex">
             <PopoverButton
@@ -24,10 +25,10 @@
         <transition
             enter-active-class="transition ease-out duration-200"
             enter-from-class="opacity-0"
-            enter-to-class="opacity-100"
+            enter-to="opacity-100"
             leave-active-class="transition ease-in duration-150"
             leave-from-class="opacity-100"
-            leave-to-class="opacity-0"
+            leave-to="opacity-0"
         >
             <PopoverPanel class="absolute inset-x-0 top-full z-20">
                 <div
@@ -42,7 +43,10 @@
                     aria-hidden="true"
                 />
 
-                <div class="relative bg-white">
+                <div
+                    class="relative bg-white"
+                    @click="handleClick($event, close)"
+                >
                     <div class="mx-auto max-w-7xl px-8">
                         <div class="py-16">
                             <div
@@ -77,13 +81,50 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
+    import { ref, onMounted, onBeforeUnmount } from 'vue';
     import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
+    import { useRouter } from 'vue-router';
 
+    const router = useRouter();
+    const popoverRef = ref(null);
     const topRecipes = ref([]);
     const isLoading = ref(false);
     const hasLoaded = ref(false);
     const error = ref(null);
+
+    const handleClick = (event, close) => {
+        const clickedElement = event.target;
+
+        const isLink =
+            clickedElement.tagName === 'A' ||
+            clickedElement.closest('a') ||
+            clickedElement.closest('.nuxt-link') ||
+            clickedElement.closest('.recipe-card');
+
+        if (isLink) {
+            close();
+        }
+    };
+
+    const stopRouteWatcher = ref(null);
+
+    onMounted(() => {
+        stopRouteWatcher.value = router.afterEach(() => {
+            if (popoverRef.value?.$el) {
+                const panel = popoverRef.value.$el.querySelector('[id^="headlessui-popover-panel-"]');
+
+                if (panel) {
+                    document.body.click();
+                }
+            }
+        });
+    });
+
+    onBeforeUnmount(() => {
+        if (stopRouteWatcher.value) {
+            stopRouteWatcher.value();
+        }
+    });
 
     const fetchTopRecipes = async () => {
         console.log('Fetching hot recipes...');
@@ -95,8 +136,6 @@
 
         try {
             const response = await $fetch('/api/recipes/top');
-
-            console.log('response', response);
 
             topRecipes.value = response.data.data || [];
             hasLoaded.value = true;

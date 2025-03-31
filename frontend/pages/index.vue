@@ -6,7 +6,6 @@
                 <p class="mx-auto mt-4 max-w-xl text-base text-gray-500">Find a recipe to your delight.</p>
             </div>
 
-            <!-- Search -->
             <Disclosure
                 as="section"
                 aria-labelledby="search-heading"
@@ -19,36 +18,39 @@
                     Search Inputs
                 </h2>
                 <div class="relative col-start-1 row-start-1 py-4">
-                    <div class="mx-auto flex max-w-7xl justify-between px-4 text-sm sm:px-6 lg:px-8">
-                        <Search
-                            identifier="author-email"
-                            type="text"
-                            label="Author Email"
-                            placeholder="Search by author email"
-                            :model-value="state.search.email"
-                            :validation-rules="['email']"
-                            @search-updated="handleSearchUpdated"
-                        ></Search>
+                    <div class="mx-auto max-w-7xl px-4 text-sm sm:px-6 lg:px-8">
+                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            <InputSearch
+                                identifier="author-email"
+                                type="text"
+                                label="Author Email"
+                                placeholder="Search by author email"
+                                :model-value="state.search.email"
+                                :validation-rules="['email']"
+                                @search-updated="handleSearchUpdated"
+                            />
 
-                        <Search
-                            identifier="keyword"
-                            type="text"
-                            label="Keyword"
-                            placeholder="Search by recipe keyword"
-                            :model-value="state.search.keyword"
-                            :validation-rules="['minLength:2']"
-                            @search-updated="handleSearchUpdated"
-                        ></Search>
+                            <InputSearch
+                                identifier="keyword"
+                                type="text"
+                                label="Keyword"
+                                placeholder="Search by recipe keyword"
+                                :model-value="state.search.keyword"
+                                :validation-rules="['minLength:2']"
+                                @search-updated="handleSearchUpdated"
+                            />
 
-                        <Search
-                            identifier="ingredient"
-                            type="text"
-                            label="Ingredient"
-                            placeholder="Search by an ingredient"
-                            :model-value="state.search.ingredient"
-                            :validation-rules="['minLength:2']"
-                            @search-updated="handleSearchUpdated"
-                        ></Search>
+                            <InputSearch
+                                identifier="ingredient"
+                                type="text"
+                                label="Ingredient"
+                                placeholder="Search by an ingredient"
+                                :model-value="state.search.ingredient"
+                                :validation-rules="['minLength:2']"
+                                @search-updated="handleSearchUpdated"
+                                class="md:col-span-2 lg:col-span-1"
+                            />
+                        </div>
                     </div>
                 </div>
             </Disclosure>
@@ -105,6 +107,15 @@
 <script setup>
     import { ref, reactive, computed } from 'vue';
     import { Disclosure } from '@headlessui/vue';
+
+    useSeoMeta({
+        title: 'Home',
+        description:
+            'Search our collection of delicious recipes from around the world. Search by authors, keywords, or ingredients.',
+        ogImage: 'https://yoursite.com/images/homepage-social.jpg',
+        ogDescription:
+            'Find your next favorite meal with our recipe search. Browse thousands of recipes from around the world.',
+    });
 
     const state = reactive({
         loading: false,

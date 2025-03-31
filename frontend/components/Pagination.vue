@@ -30,18 +30,22 @@
                 >...</span
             >
 
-            <button
-                v-for="page in visiblePages"
-                :key="page"
-                v-if="page !== 1 && page !== props.lastPage"
-                @click="changePage(page)"
-                :class="[
-                    props.currentPage === page ? 'border-sky-600 ring-1 ring-sky-600' : 'border-gray-300',
-                    'inline-flex h-10 items-center rounded-md border bg-white px-4 hover:bg-gray-100 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/25 focus:ring-offset-1 focus:ring-offset-sky-600 focus:outline-none',
-                ]"
+            <!-- Fix: Move v-if outside of v-for element -->
+            <template
+                v-for="pageNum in visiblePages"
+                :key="pageNum"
             >
-                {{ page }}
-            </button>
+                <button
+                    v-if="pageNum !== 1 && pageNum !== props.lastPage"
+                    @click="changePage(pageNum)"
+                    :class="[
+                        props.currentPage === pageNum ? 'border-sky-600 ring-1 ring-sky-600' : 'border-gray-300',
+                        'inline-flex h-10 items-center rounded-md border bg-white px-4 hover:bg-gray-100 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/25 focus:ring-offset-1 focus:ring-offset-sky-600 focus:outline-none',
+                    ]"
+                >
+                    {{ pageNum }}
+                </button>
+            </template>
 
             <span
                 v-if="props.currentPage < props.lastPage - 2"

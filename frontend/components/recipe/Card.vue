@@ -56,13 +56,26 @@
                     />
                     <span class="ml-1 text-xs text-gray-500">{{ recipe.reviews }}</span>
                 </div>
-                <time
-                    v-if="recipe.published_at"
-                    :datetime="recipe.published_at"
-                    class="text-xs text-gray-500"
-                >
-                    {{ formattedDate }}
-                </time>
+                <!-- Use clientOnly to prevent hydration mismatch -->
+                <ClientOnly>
+                    <time
+                        v-if="recipe.published_at"
+                        :datetime="recipe.published_at"
+                        class="text-xs text-gray-500"
+                    >
+                        {{ formattedDate }}
+                    </time>
+                    <template #fallback>
+                        <time
+                            v-if="recipe.published_at"
+                            :datetime="recipe.published_at"
+                            class="text-xs text-gray-500"
+                        >
+                            <!-- Use a placeholder or fixed format that won't change between server/client -->
+                            {{ fixedFormattedDate }}
+                        </time>
+                    </template>
+                </ClientOnly>
             </div>
         </div>
     </div>
@@ -88,14 +101,31 @@
         return views.toString();
     });
 
-    const formattedDate = computed(() => {
-        if (!props.recipe.published_at) return '';
+    const formatDateWithTimezone = (dateString) => {
+        if (!dateString) return '';
 
-        const date = new Date(props.recipe.published_at);
+        const date = new Date(dateString);
 
         return new Intl.DateTimeFormat('en-US', {
             month: 'short',
             day: 'numeric',
+            timeZone: 'UTC',
         }).format(date);
+    };
+
+    const formattedDate = computed(() => {
+        return formatDateWithTimezone(props.recipe.published_at);
+    });
+
+    const fixedFormattedDate = computed(() => {
+        if (!props.recipe.published_at) return '';
+
+        const datePart = props.recipe.published_at.split('T')[0];
+        const [year, month, day] = datePart.split('-');
+
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const monthName = monthNames[parseInt(month) - 1];
+
+        return `${monthName} ${parseInt(day)}`;
     });
 </script>

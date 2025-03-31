@@ -1,5 +1,7 @@
 <template>
     <div class="bg-white">
+        <MetaSearchEngineOptimization :recipe="recipe" />
+
         <div class="mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:max-w-7xl lg:px-8">
             <div class="lg:grid lg:grid-cols-7 lg:grid-rows-1 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
                 <div class="lg:col-span-4 lg:row-end-1">
@@ -43,16 +45,7 @@
                     <p class="mt-5 text-base leading-relaxed text-gray-700">{{ recipe.description }}</p>
 
                     <div class="mt-8">
-                        <button
-                            type="button"
-                            class="flex w-full max-w-xs items-center justify-center rounded-md border border-transparent bg-sky-50 px-8 py-3 text-base font-medium text-sky-700 transition-colors duration-200 hover:bg-sky-100 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none"
-                        >
-                            <HeartIcon
-                                class="mr-2 h-5 w-5 flex-shrink-0 text-sky-500"
-                                aria-hidden="true"
-                            />
-                            <span>Like</span>
-                        </button>
+                        <RecipeSave :recipe="recipe" />
                     </div>
                 </div>
 
@@ -109,7 +102,6 @@
 </template>
 
 <script setup>
-    import { HeartIcon } from '@heroicons/vue/20/solid';
     import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue';
     import { format } from 'date-fns';
 

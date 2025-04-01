@@ -25,7 +25,7 @@
                                 type="text"
                                 label="Author Email"
                                 placeholder="Search by author email"
-                                :model-value="state.search.email"
+                                :value="state.search.email"
                                 :validation-rules="['email']"
                                 @search-updated="handleSearchUpdated"
                             />
@@ -35,7 +35,7 @@
                                 type="text"
                                 label="Keyword"
                                 placeholder="Search by recipe keyword"
-                                :model-value="state.search.keyword"
+                                :value="state.search.keyword"
                                 :validation-rules="['minLength:2']"
                                 @search-updated="handleSearchUpdated"
                             />
@@ -45,10 +45,10 @@
                                 type="text"
                                 label="Ingredient"
                                 placeholder="Search by an ingredient"
-                                :model-value="state.search.ingredient"
+                                :value="state.search.ingredient"
                                 :validation-rules="['minLength:2']"
-                                @search-updated="handleSearchUpdated"
                                 class="md:col-span-2 lg:col-span-1"
+                                @search-updated="handleSearchUpdated"
                             />
                         </div>
                     </div>
@@ -105,8 +105,9 @@
 </template>
 
 <script setup>
-    import { ref, reactive, computed } from 'vue';
+    import { reactive, computed, onMounted, watch } from 'vue';
     import { Disclosure } from '@headlessui/vue';
+    import { useRoute } from 'vue-router';
 
     useSeoMeta({
         title: 'Home',
@@ -116,6 +117,8 @@
         ogDescription:
             'Find your next favorite meal with our recipe search. Browse thousands of recipes from around the world.',
     });
+
+    const route = useRoute();
 
     const state = reactive({
         loading: false,
@@ -135,10 +138,66 @@
         },
     });
 
+    // Update search parameters from URL
+    const updateSearchFromUrl = () => {
+        const newSearch = {
+            email: '',
+            keyword: '',
+            ingredient: '',
+        };
+
+        // Check for keyword parameter
+        if (route.query.keyword) {
+            newSearch.keyword = route.query.keyword;
+        }
+
+        // Check for 'q' parameter which is used from the modal search
+        if (route.query.q) {
+            newSearch.keyword = route.query.q;
+        }
+
+        // You can add more URL parameters here if needed
+        if (route.query.email) {
+            newSearch.email = route.query.email;
+        }
+
+        if (route.query.ingredient) {
+            newSearch.ingredient = route.query.ingredient;
+        }
+
+        // Update the state all at once to avoid multiple renders
+        state.search = newSearch;
+    };
+
+    // Watch for route changes to update search parameters
+    watch(
+        () => route.query,
+        () => {
+            updateSearchFromUrl();
+        },
+        { immediate: true },
+    );
+
+    // Process URL parameters and run search when component mounts
+    onMounted(() => {
+        updateSearchFromUrl();
+
+        // Only fetch recipes if we have search parameters
+        if (state.search.keyword || state.search.email || state.search.ingredient) {
+            fetchRecipes(1);
+        }
+    });
+
     const hasRecipes = computed(() => state.recipes.length > 0);
     const isEmpty = computed(() => !state.loading && hasRecipes.value === false);
 
-    const { data: initialData, error: initialError } = await useFetch('/api/recipes');
+    // Include the existing URL parameters in the initial fetch
+    const { data: initialData, error: initialError } = await useFetch('/api/recipes', {
+        query: {
+            // Include current search parameters in initial data fetch
+            ...route.query,
+        },
+    });
 
     const processRecipeData = (data) => {
         if (!data) return;
@@ -167,6 +226,8 @@
 
     if (initialData.value) {
         processRecipeData(initialData.value);
+        // Also update state.search values with any URL parameters
+        updateSearchFromUrl();
     } else if (initialError.value) {
         state.error = initialError.value;
         console.error('Error loading initial recipes:', initialError.value);

@@ -19,8 +19,8 @@
 <script setup>
     import { BookmarkIcon as BookmarkIconOutline } from '@heroicons/vue/24/outline';
     import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/vue/24/solid';
-    import { useRecipeStore } from '~/stores/savedRecipeStore';
     import { computed } from 'vue';
+    import { useRecipeStore } from '~/stores/savedRecipeStore';
 
     const props = defineProps({
         recipe: {

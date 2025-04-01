@@ -63,16 +63,12 @@ export function useValidation(initialValue = '', rules = []) {
     };
 
     const updateValue = (newValue, validateOnUpdate = true) => {
-        console.log('Updating value:', newValue);
-
         value.value = newValue;
         isDirty.value = true;
 
         if (validateOnUpdate) {
             validate(newValue);
         }
-
-        console.log('Validation result:', isValid.value);
 
         return isValid.value;
     };

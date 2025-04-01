@@ -5,9 +5,9 @@
     >
         <div class="min-w-0 flex-1">
             <button
-                @click="changePage(props.currentPage - 1)"
                 :disabled="props.currentPage <= 1"
                 class="inline-flex h-10 items-center rounded-md border border-gray-300 bg-white px-4 hover:bg-gray-100 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/25 focus:ring-offset-1 focus:ring-offset-sky-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                @click="changePage(props.currentPage - 1)"
             >
                 Previous
             </button>
@@ -15,11 +15,11 @@
         <div class="hidden space-x-2 sm:flex">
             <button
                 v-if="props.lastPage > 0"
-                @click="changePage(1)"
                 :class="[
                     props.currentPage === 1 ? 'border-sky-600 ring-1 ring-sky-600' : 'border-gray-300',
                     'inline-flex h-10 items-center rounded-md border bg-white px-4 hover:bg-gray-100 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/25 focus:ring-offset-1 focus:ring-offset-sky-600 focus:outline-none',
                 ]"
+                @click="changePage(1)"
             >
                 1
             </button>
@@ -37,11 +37,11 @@
             >
                 <button
                     v-if="pageNum !== 1 && pageNum !== props.lastPage"
-                    @click="changePage(pageNum)"
                     :class="[
                         props.currentPage === pageNum ? 'border-sky-600 ring-1 ring-sky-600' : 'border-gray-300',
                         'inline-flex h-10 items-center rounded-md border bg-white px-4 hover:bg-gray-100 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/25 focus:ring-offset-1 focus:ring-offset-sky-600 focus:outline-none',
                     ]"
+                    @click="changePage(pageNum)"
                 >
                     {{ pageNum }}
                 </button>
@@ -55,11 +55,11 @@
 
             <button
                 v-if="props.lastPage > 1"
-                @click="changePage(props.lastPage)"
                 :class="[
                     props.currentPage === props.lastPage ? 'border-sky-600 ring-1 ring-sky-600' : 'border-gray-300',
                     'inline-flex h-10 items-center rounded-md border bg-white px-4 hover:bg-gray-100 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/25 focus:ring-offset-1 focus:ring-offset-sky-600 focus:outline-none',
                 ]"
+                @click="changePage(props.lastPage)"
             >
                 {{ props.lastPage }}
             </button>
@@ -67,9 +67,9 @@
 
         <div class="flex min-w-0 flex-1 justify-end">
             <button
-                @click="changePage(props.currentPage + 1)"
                 :disabled="props.currentPage >= props.lastPage"
                 class="inline-flex h-10 items-center rounded-md border border-gray-300 bg-white px-4 hover:bg-gray-100 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/25 focus:ring-offset-1 focus:ring-offset-sky-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                @click="changePage(props.currentPage + 1)"
             >
                 Next
             </button>

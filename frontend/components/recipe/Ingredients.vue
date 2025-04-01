@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-    const props = defineProps({
+    defineProps({
         ingredients: {
             type: Object,
             required: true,

@@ -1,8 +1,8 @@
 <template>
     <Popover
-        class="flex"
         v-slot="{ open, close }"
         ref="popoverRef"
+        class="flex"
     >
         <div class="relative flex">
             <PopoverButton
@@ -36,7 +36,7 @@
                     v-once
                     class="hidden"
                     @vue:mounted="loadSavedRecipes"
-                ></div>
+                />
 
                 <div
                     class="absolute inset-0 top-1/2 bg-white shadow"
@@ -49,15 +49,14 @@
                 >
                     <div class="mx-auto max-w-7xl px-8">
                         <div class="py-16">
-                            <!-- Header with Clear All button -->
                             <div
-                                class="mb-6 flex items-center justify-between"
                                 v-if="!isLoading && !error && savedRecipes.length > 0"
+                                class="mb-6 flex items-center justify-between"
                             >
                                 <h2 class="text-lg font-medium text-gray-900">Your Saved Recipes</h2>
                                 <button
-                                    @click="clearAllSaved"
                                     class="clear-btn rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-100 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
+                                    @click="clearAllSaved"
                                 >
                                     Clear All
                                 </button>
@@ -128,7 +127,6 @@
             clickedElement.closest('.recipe-card');
 
         if (isLink && !clickedElement.classList.contains('clear-btn')) {
-            console.log('Link clicked, closing popover');
             close();
         }
     };

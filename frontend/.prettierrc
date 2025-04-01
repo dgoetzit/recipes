@@ -1,18 +1,19 @@
 {
-  "plugins": [
-    "prettier-plugin-tailwindcss",
-    "prettier-plugin-multiline-arrays"
-  ],
-  "overrides": [
-    {
-      "files": ["*.{vue,js}"],
-      "options": {
-        "printWidth": 120,
-        "tabWidth": 4,
-        "singleQuote": true,
-        "vueIndentScriptAndStyle": true,
-        "singleAttributePerLine": true
-      }
-    }
-  ]
+    "plugins": [
+        "prettier-plugin-tailwindcss",
+        "prettier-plugin-multiline-arrays"
+    ],
+    "overrides": [
+        {
+            "files": ["*.{vue,js}"],
+            "options": {
+                "printWidth": 120,
+                "tabWidth": 4,
+                "singleQuote": true,
+                "quoteProps": "preserve",
+                "vueIndentScriptAndStyle": true,
+                "singleAttributePerLine": true
+            }
+        }
+    ]
 }

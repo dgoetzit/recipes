@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-    const props = defineProps({
+    defineProps({
         steps: {
             type: Object,
             required: true,

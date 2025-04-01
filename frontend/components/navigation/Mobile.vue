@@ -46,7 +46,7 @@
                             </button>
                         </div>
 
-                        <NavigationElementsMobileCategoryTabs />
+                        <NavigationElementsMobileTabs @close="$emit('close')" />
                     </DialogPanel>
                 </TransitionChild>
             </div>
@@ -66,4 +66,8 @@
     });
 
     defineEmits(['close', 'open']);
+
+    const closeMenu = () => {
+        emit('close');
+    };
 </script>

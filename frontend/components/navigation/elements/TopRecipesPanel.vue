@@ -1,8 +1,8 @@
 <template>
     <Popover
-        class="flex"
         v-slot="{ open, close }"
         ref="popoverRef"
+        class="flex"
     >
         <div class="relative flex">
             <PopoverButton
@@ -36,7 +36,7 @@
                     v-once
                     class="hidden"
                     @vue:mounted="fetchTopRecipes()"
-                ></div>
+                />
 
                 <div
                     class="absolute inset-0 top-1/2 bg-white shadow"
@@ -127,9 +127,9 @@
     });
 
     const fetchTopRecipes = async () => {
-        console.log('Fetching hot recipes...');
-
-        if (hasLoaded.value && topRecipes.value.length > 0) return;
+        if (hasLoaded.value && topRecipes.value.length > 0) {
+            return;
+        }
 
         isLoading.value = true;
         error.value = null;

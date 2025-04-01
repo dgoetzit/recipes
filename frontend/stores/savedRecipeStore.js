@@ -37,7 +37,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     }
 
     function initFromLocalStorage() {
-        if (process.client) {
+        if (import.meta.client) {
             const saved = localStorage.getItem('savedRecipes');
 
             if (saved) {
@@ -51,7 +51,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     }
 
     function saveToLocalStorage() {
-        if (process.client) {
+        if (import.meta.client) {
             localStorage.setItem('savedRecipes', JSON.stringify(savedRecipes.value));
         }
     }

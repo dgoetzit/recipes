@@ -42,7 +42,9 @@
                         </div>
                     </div>
 
-                    <p class="mt-5 text-base leading-relaxed text-gray-700">{{ recipe.description }}</p>
+                    <p class="mt-5 text-base leading-relaxed text-gray-700">
+                        {{ recipe.description }}
+                    </p>
 
                     <div class="mt-8">
                         <RecipeSave :recipe="recipe" />
@@ -54,8 +56,8 @@
                         <div class="border-b border-gray-200">
                             <TabList class="-mb-px flex border-b border-gray-200">
                                 <Tab
-                                    as="template"
                                     v-slot="{ selected }"
+                                    as="template"
                                 >
                                     <button
                                         :class="[
@@ -69,8 +71,8 @@
                                     </button>
                                 </Tab>
                                 <Tab
-                                    as="template"
                                     v-slot="{ selected }"
+                                    as="template"
                                 >
                                     <button
                                         :class="[
@@ -108,7 +110,7 @@
     const route = useRoute();
     const slug = route.params.slug;
 
-    const { data: recipe, error } = await useFetch(`/api/recipes/${slug}`, {
+    const { data: recipe } = await useFetch(`/api/recipes/${slug}`, {
         transform: (response) => {
             return response.data;
         },

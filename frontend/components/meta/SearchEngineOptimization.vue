@@ -1,4 +1,6 @@
-<template></template>
+<template>
+    <div />
+</template>
 
 <script setup>
     const props = defineProps({
@@ -27,9 +29,9 @@
                     innerHTML: JSON.stringify({
                         '@context': 'https://schema.org',
                         '@type': 'Recipe',
-                        name: props.recipe.name,
-                        image: props.recipe.image,
-                        description: props.recipe.description,
+                        'name': props.recipe.name,
+                        'image': props.recipe.image,
+                        'description': props.recipe.description,
                     }),
                 },
             ];

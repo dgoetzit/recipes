@@ -22,13 +22,13 @@
                         stroke-linejoin="round"
                         stroke-width="2"
                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    ></path>
+                    />
                     <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
                         stroke-width="2"
                         d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                    ></path>
+                    />
                 </svg>
                 {{ formattedViews }}
             </div>
@@ -53,10 +53,10 @@
                         :key="rating"
                         :class="[recipe.rating > rating ? 'text-yellow-400' : 'text-gray-200', 'size-4 shrink-0']"
                         aria-hidden="true"
+                        data-test="recipe-rating"
                     />
                     <span class="ml-1 text-xs text-gray-500">{{ recipe.reviews }}</span>
                 </div>
-                <!-- Use clientOnly to prevent hydration mismatch -->
                 <ClientOnly>
                     <time
                         v-if="recipe.published_at"
@@ -65,16 +65,6 @@
                     >
                         {{ formattedDate }}
                     </time>
-                    <template #fallback>
-                        <time
-                            v-if="recipe.published_at"
-                            :datetime="recipe.published_at"
-                            class="text-xs text-gray-500"
-                        >
-                            <!-- Use a placeholder or fixed format that won't change between server/client -->
-                            {{ fixedFormattedDate }}
-                        </time>
-                    </template>
                 </ClientOnly>
             </div>
         </div>
@@ -84,6 +74,7 @@
 <script setup>
     import { computed } from 'vue';
     import { StarIcon } from '@heroicons/vue/20/solid';
+    import { format, parseISO } from 'date-fns';
 
     const props = defineProps({
         recipe: {
@@ -98,34 +89,15 @@
         if (views >= 1000) {
             return (views / 1000).toFixed(1) + 'K';
         }
+
         return views.toString();
     });
 
-    const formatDateWithTimezone = (dateString) => {
-        if (!dateString) return '';
-
-        const date = new Date(dateString);
-
-        return new Intl.DateTimeFormat('en-US', {
-            month: 'short',
-            day: 'numeric',
-            timeZone: 'UTC',
-        }).format(date);
-    };
-
     const formattedDate = computed(() => {
-        return formatDateWithTimezone(props.recipe.published_at);
-    });
+        if (!props.recipe.published_at) {
+            return '';
+        }
 
-    const fixedFormattedDate = computed(() => {
-        if (!props.recipe.published_at) return '';
-
-        const datePart = props.recipe.published_at.split('T')[0];
-        const [year, month, day] = datePart.split('-');
-
-        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        const monthName = monthNames[parseInt(month) - 1];
-
-        return `${monthName} ${parseInt(day)}`;
+        return format(parseISO(props.recipe.published_at), 'MMM d');
     });
 </script>

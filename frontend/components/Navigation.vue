@@ -1,7 +1,7 @@
 <template>
     <div>
         <NavigationMobile
-            :isOpen="mobileMenuOpen"
+            :is-open="mobileMenuOpen"
             @close="mobileMenuOpen = false"
             @open="mobileMenuOpen = true"
         />
@@ -26,7 +26,7 @@
                                 />
                             </button>
 
-                            <NavigationElementsSearch class="ml-2" />
+                            <NavigationElementsMobileSearch class="ml-2" />
                         </div>
 
                         <NavigationDesktop />
@@ -34,7 +34,7 @@
                         <NavigationElementsLogo />
 
                         <div class="flex flex-1 items-center justify-end">
-                            <NavigationElementsSearch class="hidden lg:block" />
+                            <NavigationElementsDesktopSearch class="hidden lg:block" />
                         </div>
                     </div>
                 </div>

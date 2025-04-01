@@ -1,8 +1,8 @@
 <template>
     <Popover
-        class="flex"
         v-slot="{ open, close }"
         ref="popoverRef"
+        class="flex"
     >
         <div class="relative flex space-x-4">
             <PopoverButton
@@ -35,7 +35,7 @@
                         v-once
                         class="hidden"
                         @vue:mounted="fetchInitialData"
-                    ></div>
+                    />
 
                     <div
                         class="absolute inset-0 top-1/2 bg-white shadow"
@@ -80,7 +80,7 @@
                                         <Tab.Panel>
                                             <NavigationElementsTopRecipesPanel
                                                 :recipes="topRecipes"
-                                                :isLoading="isLoadingTop"
+                                                :is-loading="isLoadingTop"
                                                 :error="topError"
                                             />
                                         </Tab.Panel>
@@ -88,7 +88,7 @@
                                         <Tab.Panel>
                                             <NavigationElementsSavedRecipesPanel
                                                 :recipes="savedRecipes"
-                                                :isLoading="isLoadingSaved"
+                                                :is-loading="isLoadingSaved"
                                                 :error="savedError"
                                             />
                                         </Tab.Panel>
@@ -105,8 +105,7 @@
 
 <script setup>
     import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
-    import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
-    import { Tab } from '@headlessui/vue';
+    import { Popover, PopoverButton, PopoverPanel, Tab } from '@headlessui/vue';
     import { useRouter } from 'vue-router';
     import { useRecipeStore } from '~/stores/savedRecipeStore';
 
@@ -154,7 +153,6 @@
             clickedElement.closest('.recipe-card');
 
         if (isLink) {
-            console.log('Link clicked, closing popover');
             close();
         }
     };

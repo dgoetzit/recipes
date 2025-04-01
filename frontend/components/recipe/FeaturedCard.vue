@@ -51,13 +51,13 @@
                             stroke-linejoin="round"
                             stroke-width="2"
                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                        ></path>
+                        />
                         <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width="2"
                             d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                        ></path>
+                        />
                     </svg>
                     {{ formattedViews }}
                 </div>
@@ -75,6 +75,7 @@
 <script setup>
     import { computed } from 'vue';
     import { StarIcon } from '@heroicons/vue/20/solid';
+    import { format, parseISO } from 'date-fns';
 
     const props = defineProps({
         recipe: {
@@ -92,12 +93,10 @@
     });
 
     const formattedDate = computed(() => {
-        if (!props.recipe.published_at) return '';
+        if (!props.recipe.published_at) {
+            return '';
+        }
 
-        const date = new Date(props.recipe.published_at);
-        return new Intl.DateTimeFormat('en-US', {
-            month: 'short',
-            day: 'numeric',
-        }).format(date);
+        return format(parseISO(props.recipe.published_at), 'MMM d');
     });
 </script>

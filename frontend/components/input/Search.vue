@@ -8,12 +8,11 @@
         </label>
         <div class="mt-2 grid grid-cols-1">
             <input
+                :id="identifier"
                 v-model="inputValue"
                 :type="type"
                 :name="identifier"
-                :id="identifier"
-                class="col-start-1 row-start-1 block w-full rounded-md bg-white py-1.5 pr-3 pl-10 text-base text-gray-900 outline -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:-outline-offset-2 focus:outline-sky-600 sm:pl-9 sm:text-sm/6"
-                :class="{ 'outline-red-500': showError }"
+                :class="inputClasses"
                 :placeholder="placeholder"
                 @blur="handleBlur"
             />
@@ -34,26 +33,23 @@
 <script setup>
     import { MagnifyingGlassIcon } from '@heroicons/vue/16/solid';
     import { ref, watch, computed } from 'vue';
+    import { debounce } from 'lodash';
 
     const props = defineProps({
         identifier: {
             type: String,
-            required: true,
             default: 'search',
         },
         type: {
             type: String,
-            required: true,
             default: 'text',
         },
         label: {
             type: String,
-            required: true,
             default: 'Search',
         },
         placeholder: {
             type: String,
-            required: false,
             default: 'Search',
         },
         value: {
@@ -74,8 +70,17 @@
 
     const showError = computed(() => wasTouched.value && errorMessage.value);
 
+    const inputClasses = computed(() => ({
+        'outline-red-500': showError.value,
+        'col-start-1 row-start-1 block w-full rounded-md bg-white py-1.5 pr-3 pl-10 text-base text-gray-900 outline -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:-outline-offset-2 focus:outline-sky-600 sm:pl-9 sm:text-sm/6': true,
+    }));
+
     const validate = (value) => {
         errorMessage.value = '';
+
+        if (!props.validationRules?.length || !value) {
+            return true;
+        }
 
         if (!props.validationRules || !props.validationRules.length) {
             return true;
@@ -104,20 +109,16 @@
         return true;
     };
 
-    let debounceTimer = null;
-    const debounce = (callback, time = 300) => {
-        if (debounceTimer) clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(callback, time);
-    };
+    const debouncedEmit = debounce((value) => {
+        const isValid = validate(value);
+
+        if (isValid || value === '') {
+            emit('searchUpdated', props.identifier, value);
+        }
+    }, 300);
 
     watch(inputValue, (newValue) => {
-        const isValid = validate(newValue);
-
-        debounce(() => {
-            if (isValid || newValue === '') {
-                emit('searchUpdated', props.identifier, newValue);
-            }
-        });
+        debouncedEmit(newValue);
     });
 
     const handleBlur = () => {

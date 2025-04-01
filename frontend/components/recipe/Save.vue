@@ -20,7 +20,7 @@
     import { BookmarkIcon as BookmarkIconOutline } from '@heroicons/vue/24/outline';
     import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/vue/24/solid';
     import { computed } from 'vue';
-    import { useRecipeStore } from '~/stores/savedRecipeStore';
+    import { useSavedRecipeStore } from '~/stores/useSavedRecipeStore';
 
     const props = defineProps({
         recipe: {
@@ -29,7 +29,7 @@
         },
     });
 
-    const recipeStore = useRecipeStore();
+    const recipeStore = useSavedRecipeStore();
 
     const isSaved = computed(() => {
         if (!props.recipe || !props.recipe.id) {

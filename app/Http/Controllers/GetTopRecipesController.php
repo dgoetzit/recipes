@@ -14,7 +14,7 @@ class GetTopRecipesController extends Controller
     {
         $recipes = Recipe::query()
             ->orderBy('views', 'desc')
-            ->limit(6)
+            ->limit(3)
             ->get();
 
         return response()->json([

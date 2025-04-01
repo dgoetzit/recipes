@@ -34,9 +34,11 @@
                                 </p>
                                 <span class="text-gray-300">|</span>
                                 <p class="text-gray-600">
-                                    <time :datetime="recipe.published_at">{{
-                                        format(recipe.published_at, 'MMMM d, yyyy')
-                                    }}</time>
+                                    <ClientOnly>
+                                        <time :datetime="recipe.published_at">{{
+                                            format(recipe.published_at, 'MMMM d, yyyy')
+                                        }}</time>
+                                    </ClientOnly>
                                 </p>
                             </div>
                         </div>

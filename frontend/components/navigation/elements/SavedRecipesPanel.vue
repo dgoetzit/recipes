@@ -24,36 +24,28 @@
 
         <transition
             enter-active-class="transition ease-out duration-200"
-            enter-from-class="opacity-0"
-            enter-to="opacity-100"
+            enter-from-class="opacity-0 translate-y-1"
+            enter-to="opacity-100 translate-y-0"
             leave-active-class="transition ease-in duration-150"
-            leave-from-class="opacity-100"
-            leave-to="opacity-0"
+            leave-from-class="opacity-100 translate-y-0"
+            leave-to="opacity-0 translate-y-1"
         >
             <PopoverPanel class="absolute inset-x-0 top-full z-20">
-                <div
-                    v-if="open"
-                    v-once
-                    class="hidden"
-                    @vue:mounted="loadSavedRecipes"
-                />
-
                 <div
                     class="absolute inset-0 top-1/2 bg-white shadow"
                     aria-hidden="true"
                 />
 
                 <div
-                    class="relative bg-white"
-                    @click="handleClick($event, close)"
+                    class="relative z-20 bg-white shadow-lg"
+                    @click="(event) => handleClick(event, close)"
                 >
                     <div class="mx-auto max-w-7xl px-8">
                         <div class="py-16">
                             <div
                                 v-if="!isLoading && !error && savedRecipes.length > 0"
-                                class="mb-6 flex items-center justify-between"
+                                class="mb-6 flex items-center justify-end"
                             >
-                                <h2 class="text-lg font-medium text-gray-900">Your Saved Recipes</h2>
                                 <button
                                     class="clear-btn rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-100 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
                                     @click="clearAllSaved"
@@ -77,12 +69,15 @@
                             </div>
 
                             <div v-else>
-                                <!-- Show empty state if no saved recipes -->
                                 <div
                                     v-if="savedRecipes.length === 0"
                                     class="py-12 text-center"
                                 >
-                                    <p class="text-gray-500">No saved recipes yet</p>
+                                    <UiStatesEmpty
+                                        title="No saved recipes"
+                                        description="You haven't saved any recipes yet."
+                                        emoji="🤷‍♂️"
+                                    />
                                 </div>
 
                                 <div
@@ -105,66 +100,18 @@
 </template>
 
 <script setup>
-    import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
+    import { ref, computed } from 'vue';
     import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
-    import { useRouter } from 'vue-router';
-    import { useRecipeStore } from '~/stores/savedRecipeStore';
+    import { usePopover } from '~/composables/usePopover';
+    import { useSavedRecipeStore } from '~/stores/useSavedRecipeStore';
 
-    const router = useRouter();
-    const recipeStore = useRecipeStore();
-    const popoverRef = ref(null);
+    const { popoverRef, handleClick } = usePopover();
+
+    const recipeStore = useSavedRecipeStore();
     const isLoading = ref(false);
     const error = ref(null);
 
     const savedRecipes = computed(() => recipeStore.getSavedRecipes);
-
-    const handleClick = (event, close) => {
-        const clickedElement = event.target;
-        const isLink =
-            clickedElement.tagName === 'A' ||
-            clickedElement.closest('a') ||
-            clickedElement.closest('.nuxt-link') ||
-            clickedElement.closest('.recipe-card');
-
-        if (isLink && !clickedElement.classList.contains('clear-btn')) {
-            close();
-        }
-    };
-
-    const stopRouteWatcher = ref(null);
-
-    onMounted(() => {
-        stopRouteWatcher.value = router.afterEach(() => {
-            if (popoverRef.value?.$el) {
-                const panel = popoverRef.value.$el.querySelector('[id^="headlessui-popover-panel-"]');
-                if (panel) {
-                    document.body.click();
-                }
-            }
-        });
-    });
-
-    onBeforeUnmount(() => {
-        if (stopRouteWatcher.value) {
-            stopRouteWatcher.value();
-        }
-    });
-
-    const loadSavedRecipes = () => {
-        isLoading.value = true;
-        error.value = null;
-
-        // simulated loading state...
-        try {
-            setTimeout(() => {
-                isLoading.value = false;
-            }, 300);
-        } catch (err) {
-            console.error('Error loading saved recipes:', err);
-            isLoading.value = false;
-            error.value = err;
-        }
-    };
 
     const clearAllSaved = () => {
         if (confirm('Are you sure you want to clear all saved recipes?')) {

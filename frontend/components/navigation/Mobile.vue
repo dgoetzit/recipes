@@ -66,8 +66,4 @@
     });
 
     defineEmits(['close', 'open']);
-
-    const closeMenu = () => {
-        emit('close');
-    };
 </script>

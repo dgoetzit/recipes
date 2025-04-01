@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 
-export const useRecipeStore = defineStore('recipes', () => {
+export const useSavedRecipeStore = defineStore('savedRecipes', () => {
     const savedRecipes = ref([]);
 
     const getSavedRecipes = computed(() => savedRecipes.value);
@@ -66,8 +66,8 @@ export const useRecipeStore = defineStore('recipes', () => {
         getSavedRecipes,
         isRecipeSaved,
         toggleSavedRecipe,
+        clearAllRecipes,
         initFromLocalStorage,
         saveToLocalStorage,
-        clearAllRecipes,
     };
 });

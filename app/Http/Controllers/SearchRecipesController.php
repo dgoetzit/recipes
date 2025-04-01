@@ -18,7 +18,7 @@ class SearchRecipesController extends Controller
         ]);
 
         $query = Recipe::query();
-        $limit = $request->input('limit', 5);
+        $limit = 5;
 
         if (! $request->filled('q')) {
             $recipes = Recipe::latest()

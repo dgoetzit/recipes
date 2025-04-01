@@ -24,11 +24,11 @@
 
         <transition
             enter-active-class="transition ease-out duration-200"
-            enter-from-class="opacity-0"
-            enter-to="opacity-100"
+            enter-from-class="opacity-0 translate-y-1"
+            enter-to="opacity-100 translate-y-0"
             leave-active-class="transition ease-in duration-150"
-            leave-from-class="opacity-100"
-            leave-to="opacity-0"
+            leave-from-class="opacity-100 translate-y-0"
+            leave-to="opacity-0 translate-y-1"
         >
             <PopoverPanel class="absolute inset-x-0 top-full z-20">
                 <div
@@ -44,8 +44,8 @@
                 />
 
                 <div
-                    class="relative bg-white"
-                    @click="handleClick($event, close)"
+                    class="relative z-20 bg-white shadow-lg"
+                    @click="(event) => handleClick(event, close)"
                 >
                     <div class="mx-auto max-w-7xl px-8">
                         <div class="py-16">
@@ -81,50 +81,16 @@
 </template>
 
 <script setup>
-    import { ref, onMounted, onBeforeUnmount } from 'vue';
+    import { ref } from 'vue';
     import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
-    import { useRouter } from 'vue-router';
+    import { usePopover } from '~/composables/usePopover';
 
-    const router = useRouter();
-    const popoverRef = ref(null);
+    const { popoverRef, handleClick } = usePopover();
+
     const topRecipes = ref([]);
     const isLoading = ref(false);
     const hasLoaded = ref(false);
     const error = ref(null);
-
-    const handleClick = (event, close) => {
-        const clickedElement = event.target;
-
-        const isLink =
-            clickedElement.tagName === 'A' ||
-            clickedElement.closest('a') ||
-            clickedElement.closest('.nuxt-link') ||
-            clickedElement.closest('.recipe-card');
-
-        if (isLink) {
-            close();
-        }
-    };
-
-    const stopRouteWatcher = ref(null);
-
-    onMounted(() => {
-        stopRouteWatcher.value = router.afterEach(() => {
-            if (popoverRef.value?.$el) {
-                const panel = popoverRef.value.$el.querySelector('[id^="headlessui-popover-panel-"]');
-
-                if (panel) {
-                    document.body.click();
-                }
-            }
-        });
-    });
-
-    onBeforeUnmount(() => {
-        if (stopRouteWatcher.value) {
-            stopRouteWatcher.value();
-        }
-    });
 
     const fetchTopRecipes = async () => {
         if (hasLoaded.value && topRecipes.value.length > 0) {
@@ -141,7 +107,8 @@
             hasLoaded.value = true;
         } catch (err) {
             error.value = err.message || 'An error occurred while fetching recipes';
-            console.error('Failed to fetch hot recipes:', err);
+
+            console.error('Failed to fetch top recipes:', err);
         } finally {
             isLoading.value = false;
         }

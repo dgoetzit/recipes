@@ -130,9 +130,9 @@
 <script setup>
     import { ref, watch, onMounted, computed } from 'vue';
     import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/vue';
-    import { useRecipeStore } from '~/stores/savedRecipeStore';
+    import { useSavedRecipeStore } from '~/stores/useSavedRecipeStore';
 
-    const recipeStore = useRecipeStore();
+    const recipeStore = useSavedRecipeStore();
     const activeTab = ref(0);
 
     // Top recipes state

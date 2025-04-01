@@ -222,7 +222,6 @@
             const response = await $fetch('/api/recipes/search', {
                 params: {
                     q: query || '',
-                    limit: 5,
                 },
             });
 

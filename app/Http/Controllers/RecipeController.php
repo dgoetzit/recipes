@@ -48,6 +48,7 @@ class RecipeController extends Controller
 
         if ($request->filled('ingredient')) {
             $ingredient = $request->ingredient;
+
             $query->whereHas('ingredients', function ($q) use ($ingredient) {
                 $q->where('ingredients.name', 'LIKE', "%{$ingredient}%")
                     ->orWhere('ingredient_recipe.measure_amount', 'LIKE', "%{$ingredient}%");

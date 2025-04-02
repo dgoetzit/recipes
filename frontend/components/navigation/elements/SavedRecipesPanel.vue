@@ -104,9 +104,9 @@
 <script setup>
     import { ref, computed } from 'vue';
     import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
+    import { BookmarkIcon } from '@heroicons/vue/24/solid';
     import { usePopover } from '~/composables/usePopover';
     import { useSavedRecipeStore } from '~/stores/useSavedRecipeStore';
-    import { BookmarkIcon } from '@heroicons/vue/24/solid';
 
     const { popoverRef, handleClick } = usePopover();
 

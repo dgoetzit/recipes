@@ -86,8 +86,8 @@
 <script setup>
     import { ref } from 'vue';
     import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
-    import { usePopover } from '~/composables/usePopover';
     import { StarIcon } from '@heroicons/vue/24/solid';
+    import { usePopover } from '~/composables/usePopover';
 
     const { popoverRef, handleClick } = usePopover();
 

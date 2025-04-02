@@ -15,11 +15,10 @@
             class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
         >
             <RecipeCard
-                v-for="(recipe, index) in recipes"
+                v-for="recipe in recipes"
                 :key="recipe.id"
                 :recipe="recipe"
-                :style="{ animationDelay: `${index * 0.05}s` }"
-                class="recipe-card-reveal rounded-lg shadow-sm transition-all duration-300 hover:translate-y-[-4px] hover:shadow-md"
+                class="rounded-lg shadow-sm transition-all duration-300 hover:translate-y-[-4px] hover:shadow-md"
             />
         </div>
 
@@ -44,22 +43,3 @@
         },
     });
 </script>
-
-<style scoped>
-    .recipe-card-reveal {
-        animation: reveal 0.5s ease forwards;
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    @keyframes reveal {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-</style>

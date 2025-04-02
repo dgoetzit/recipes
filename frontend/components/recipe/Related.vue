@@ -15,7 +15,7 @@
                 <p class="mt-1 text-sm text-gray-500">You might also enjoy these similar recipes</p>
             </div>
 
-            <div class="grid-container relative overflow-hidden">
+            <div class="relative overflow-hidden">
                 <div class="sm:hidden">
                     <div
                         ref="mobileScrollContainer"
@@ -23,21 +23,20 @@
                         @scroll="updateCurrentItem"
                     >
                         <RecipeCard
-                            v-for="(recipe, index) in relatedRecipes"
-                            :key="recipe.id"
-                            :recipe="recipe"
-                            class="w-full shrink-0 snap-center rounded-lg shadow-sm transition-all duration-300 hover:translate-y-[-4px] hover:shadow-md"
+                            v-for="(related, index) in relatedRecipes"
+                            :key="related.id"
+                            :recipe="related"
+                            class="w-full shrink-0 snap-center rounded-lg shadow-sm duration-300 hover:translate-y-[-4px] hover:shadow-md"
                             :data-index="index"
                         />
                     </div>
 
                     <div class="mt-6 mb-8 flex items-center justify-center space-x-4">
                         <template
-                            v-for="(_, index) in relatedRecipes"
+                            v-for="(item, index) in relatedRecipes"
                             :key="index"
                         >
                             <button
-                                @click="scrollToItem(index)"
                                 class="h-3 w-3 rounded-full transition-colors duration-300 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-none"
                                 :class="{
                                     'bg-gray-300 hover:bg-gray-400': currentItemIndex !== index,
@@ -45,25 +44,26 @@
                                 }"
                                 :aria-label="`Go to slide ${index + 1}`"
                                 :aria-current="currentItemIndex === index ? 'true' : 'false'"
-                            ></button>
+                                @click="scrollToItem(index)"
+                            />
                         </template>
                     </div>
                 </div>
 
                 <div class="hidden grid-cols-2 gap-6 sm:grid md:grid lg:hidden">
                     <RecipeCard
-                        v-for="recipe in relatedRecipes"
-                        :key="recipe.id"
-                        :recipe="recipe"
+                        v-for="related in relatedRecipes"
+                        :key="related.id"
+                        :recipe="related"
                         class="w-full rounded-lg shadow-sm transition-all duration-300 hover:translate-y-[-4px] hover:shadow-md"
                     />
                 </div>
 
                 <div class="hidden grid-cols-3 gap-6 lg:grid">
                     <RecipeCard
-                        v-for="recipe in relatedRecipes"
-                        :key="recipe.id"
-                        :recipe="recipe"
+                        v-for="related in relatedRecipes"
+                        :key="related.id"
+                        :recipe="related"
                         class="w-full rounded-lg shadow-sm transition-all duration-300 hover:translate-y-[-4px] hover:shadow-md"
                     />
                 </div>
@@ -180,21 +180,5 @@
 
     .scroll-smooth {
         scroll-behavior: smooth;
-    }
-
-    /* Add subtle animation for recipe cards */
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .grid-container {
-        animation: fadeIn 0.5s ease-out;
     }
 </style>

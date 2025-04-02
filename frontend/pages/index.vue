@@ -25,18 +25,7 @@
                         class="mb-8 rounded-lg border border-gray-100 bg-white p-6 shadow-sm transition duration-200 hover:shadow-md"
                     >
                         <div class="mb-4 flex items-center border-b border-gray-50 pb-4">
-                            <svg
-                                class="mr-2 h-5 w-5 text-gray-400"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                            >
-                                <path
-                                    fill-rule="evenodd"
-                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                    clip-rule="evenodd"
-                                />
-                            </svg>
+                            <MagnifyingGlassIcon class="mr-2 h-5 w-5 text-gray-400" />
                             <span class="text-sm font-medium text-gray-700">Search recipes</span>
 
                             <div class="ml-auto flex space-x-2">
@@ -69,8 +58,8 @@
                                 placeholder="Search by author email"
                                 :value="state.search.email"
                                 :validation-rules="['email']"
-                                @search-updated="handleSearchUpdated"
                                 class="search-field relative"
+                                @search-updated="handleSearchUpdated"
                             />
 
                             <InputSearch
@@ -80,8 +69,8 @@
                                 placeholder="Search by recipe keyword"
                                 :value="state.search.keyword"
                                 :validation-rules="['minLength:2']"
-                                @search-updated="handleSearchUpdated"
                                 class="search-field relative"
+                                @search-updated="handleSearchUpdated"
                             />
 
                             <InputSearch
@@ -91,8 +80,8 @@
                                 placeholder="Search by an ingredient"
                                 :value="state.search.ingredient"
                                 :validation-rules="['minLength:2']"
-                                @search-updated="handleSearchUpdated"
                                 class="search-field relative"
+                                @search-updated="handleSearchUpdated"
                             />
                         </div>
 
@@ -101,22 +90,11 @@
                             class="mt-6 flex justify-end"
                         >
                             <button
-                                @click="clearAllFilters"
                                 type="button"
                                 class="inline-flex items-center rounded-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-none"
+                                @click="clearAllFilters"
                             >
-                                <svg
-                                    class="mr-1.5 -ml-0.5 h-4 w-4 text-gray-400"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        fill-rule="evenodd"
-                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                        clip-rule="evenodd"
-                                    />
-                                </svg>
+                                <XCircleIcon class="mr-1.5 -ml-0.5 h-4 w-4 text-gray-400" />
                                 Clear filters
                             </button>
                         </div>
@@ -176,6 +154,7 @@
 
 <script setup>
     import { reactive, computed, onMounted, watch } from 'vue';
+    import { MagnifyingGlassIcon, XCircleIcon } from '@heroicons/vue/16/solid';
     import { Disclosure } from '@headlessui/vue';
     import { useRoute } from 'vue-router';
 
@@ -337,11 +316,11 @@
             keyword: '',
             ingredient: '',
         };
-        fetchRecipes(1);
     };
 
     const handlePageChange = async (pageNumber) => {
         await fetchRecipes(pageNumber);
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 </script>

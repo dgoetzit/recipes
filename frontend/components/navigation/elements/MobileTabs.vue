@@ -142,7 +142,6 @@
 
     const savedRecipes = computed(() => recipeStore.getSavedRecipes);
     const isLoadingSaved = ref(false);
-    const hasLoadedSaved = ref(false);
     const savedError = ref(null);
 
     watch(activeTab, (newTabIndex) => {

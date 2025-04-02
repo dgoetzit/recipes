@@ -8,7 +8,6 @@ export default defineNuxtConfig({
         "@nuxt/image",
     ],
     devtools: { enabled: true },
-    css: ["~/assets/css/main.css"],
     app: {
         head: {
             titleTemplate: "%s | Recipe Search 3000",
@@ -32,17 +31,7 @@ export default defineNuxtConfig({
             ],
         },
     },
-    image: {
-        presets: {
-            recipeCard: {
-                modifiers: {
-                    format: "webp",
-                    quality: 85,
-                    fit: "cover",
-                },
-            },
-        },
-    },
+    css: ["~/assets/css/main.css"],
 
     compatibilityDate: "2025-03-30",
     vite: {
@@ -53,6 +42,17 @@ export default defineNuxtConfig({
             stylistic: {
                 quotes: "single",
                 indent: 4,
+            },
+        },
+    },
+    image: {
+        presets: {
+            recipeCard: {
+                modifiers: {
+                    format: "webp",
+                    quality: 85,
+                    fit: "cover",
+                },
             },
         },
     },

@@ -31,7 +31,7 @@
                     leave-from="opacity-100"
                     leave-to="opacity-0"
                 >
-                    <div class="bg-opacity-50 fixed inset-0 bg-gray-500 transition-opacity" />
+                    <div class="fixed inset-0 bg-gray-800/80 backdrop-blur-sm transition-opacity" />
                 </TransitionChild>
 
                 <div class="fixed inset-0 z-10 overflow-y-auto">
@@ -265,7 +265,7 @@
 
         router.push({
             path: '/',
-            query: { q: searchQuery.value },
+            query: { keyword: searchQuery.value },
         });
 
         closeModal();

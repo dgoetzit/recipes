@@ -1,7 +1,7 @@
 <template>
     <div class="bg-white">
         <main class="pb-24">
-            <div class="px-4 py-16 text-center sm:px-6 lg:px-8">
+            <div class="px-4 py-12 text-center sm:px-6 lg:px-8">
                 <h1 class="text-4xl font-bold tracking-tight text-gray-900">Our Recipes</h1>
                 <p class="mx-auto mt-4 max-w-xl text-base text-gray-500">Find a recipe to your delight.</p>
             </div>
@@ -9,7 +9,7 @@
             <Disclosure
                 as="section"
                 aria-labelledby="search-heading"
-                class="grid items-center border-t border-b border-gray-200"
+                class="mb-4"
             >
                 <h2
                     id="search-heading"
@@ -17,40 +17,38 @@
                 >
                     Search Inputs
                 </h2>
-                <div class="relative col-start-1 row-start-1 py-4">
-                    <div class="mx-auto max-w-7xl px-4 text-sm sm:px-6 lg:px-8">
-                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                            <InputSearch
-                                identifier="author-email"
-                                type="text"
-                                label="Author Email"
-                                placeholder="Search by author email"
-                                :value="state.search.email"
-                                :validation-rules="['email']"
-                                @search-updated="handleSearchUpdated"
-                            />
+                <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                        <InputSearch
+                            identifier="author-email"
+                            type="text"
+                            label="Author Email"
+                            placeholder="Search by author email"
+                            :value="state.search.email"
+                            :validation-rules="['email']"
+                            @search-updated="handleSearchUpdated"
+                        />
 
-                            <InputSearch
-                                identifier="keyword"
-                                type="text"
-                                label="Keyword"
-                                placeholder="Search by recipe keyword"
-                                :value="state.search.keyword"
-                                :validation-rules="['minLength:2']"
-                                @search-updated="handleSearchUpdated"
-                            />
+                        <InputSearch
+                            identifier="keyword"
+                            type="text"
+                            label="Keyword"
+                            placeholder="Search by recipe keyword"
+                            :value="state.search.keyword"
+                            :validation-rules="['minLength:2']"
+                            @search-updated="handleSearchUpdated"
+                        />
 
-                            <InputSearch
-                                identifier="ingredient"
-                                type="text"
-                                label="Ingredient"
-                                placeholder="Search by an ingredient"
-                                :value="state.search.ingredient"
-                                :validation-rules="['minLength:2']"
-                                class="md:col-span-2 lg:col-span-1"
-                                @search-updated="handleSearchUpdated"
-                            />
-                        </div>
+                        <InputSearch
+                            identifier="ingredient"
+                            type="text"
+                            label="Ingredient"
+                            placeholder="Search by an ingredient"
+                            :value="state.search.ingredient"
+                            :validation-rules="['minLength:2']"
+                            class="md:col-span-2 lg:col-span-1"
+                            @search-updated="handleSearchUpdated"
+                        />
                     </div>
                 </div>
             </Disclosure>
@@ -66,7 +64,10 @@
                 v-else-if="state.error"
                 class="py-12 text-center"
             >
-                <UiStatesError />
+                <UiStatesError
+                    title="Unable to load recipes!"
+                    description="There was an error loading the recipes. Please try again later."
+                />
             </div>
 
             <div
@@ -86,7 +87,6 @@
                 :recipes="state.recipes"
             />
 
-            <!-- Pagination -->
             <div
                 v-if="!state.loading && !state.error && state.recipes.length > 0"
                 class="mt-8"
@@ -138,7 +138,6 @@
         },
     });
 
-    // Update search parameters from URL
     const updateSearchFromUrl = () => {
         const newSearch = {
             email: '',
@@ -146,17 +145,10 @@
             ingredient: '',
         };
 
-        // Check for keyword parameter
         if (route.query.keyword) {
             newSearch.keyword = route.query.keyword;
         }
 
-        // Check for 'q' parameter which is used from the modal search
-        if (route.query.q) {
-            newSearch.keyword = route.query.q;
-        }
-
-        // You can add more URL parameters here if needed
         if (route.query.email) {
             newSearch.email = route.query.email;
         }
@@ -165,11 +157,9 @@
             newSearch.ingredient = route.query.ingredient;
         }
 
-        // Update the state all at once to avoid multiple renders
         state.search = newSearch;
     };
 
-    // Watch for route changes to update search parameters
     watch(
         () => route.query,
         () => {
@@ -178,11 +168,9 @@
         { immediate: true },
     );
 
-    // Process URL parameters and run search when component mounts
     onMounted(() => {
         updateSearchFromUrl();
 
-        // Only fetch recipes if we have search parameters
         if (state.search.keyword || state.search.email || state.search.ingredient) {
             fetchRecipes(1);
         }
@@ -191,10 +179,8 @@
     const hasRecipes = computed(() => state.recipes.length > 0);
     const isEmpty = computed(() => !state.loading && hasRecipes.value === false);
 
-    // Include the existing URL parameters in the initial fetch
     const { data: initialData, error: initialError } = await useFetch('/api/recipes', {
         query: {
-            // Include current search parameters in initial data fetch
             ...route.query,
         },
     });
@@ -226,7 +212,7 @@
 
     if (initialData.value) {
         processRecipeData(initialData.value);
-        // Also update state.search values with any URL parameters
+
         updateSearchFromUrl();
     } else if (initialError.value) {
         state.error = initialError.value;

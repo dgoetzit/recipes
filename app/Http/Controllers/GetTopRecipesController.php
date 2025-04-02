@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class GetTopRecipesController extends Controller
 {
-    private const DEFAULT_LIMIT = 6;
+    private const DEFAULT_LIMIT = 3;
 
     public function __invoke(Request $request): JsonResponse
     {

@@ -31,7 +31,7 @@
                     leave-from="opacity-100"
                     leave-to="opacity-0"
                 >
-                    <div class="bg-opacity-50 fixed inset-0 bg-gray-500 transition-opacity" />
+                    <div class="fixed inset-0 bg-gray-800/80 backdrop-blur-sm transition-opacity" />
                 </TransitionChild>
 
                 <div class="fixed inset-0 z-10 overflow-y-auto">
@@ -100,7 +100,7 @@
                                                                 type="text"
                                                                 name="search"
                                                                 class="block w-full rounded-md border-gray-300 py-3 pl-10 text-base focus:border-sky-500 focus:ring-sky-500"
-                                                                placeholder="Search recipes, ingredients, or authors..."
+                                                                placeholder="Search for a recipe by name or ingredients"
                                                                 @input="debouncedSearch"
                                                             />
                                                         </div>
@@ -273,8 +273,8 @@
         if (!searchQuery.value.trim() || searchQuery.value.length < 2) return;
 
         router.push({
-            path: '/',
-            query: { q: searchQuery.value },
+            name: 'index',
+            query: { keyword: searchQuery.value },
         });
 
         closeModal();

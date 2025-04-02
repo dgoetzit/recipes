@@ -28,11 +28,18 @@
                                 Recipe Information
                             </h2>
 
-                            <div class="mt-3 flex items-center space-x-4 text-sm">
+                            <div
+                                class="mt-3 flex flex-col space-y-2 text-sm sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4"
+                            >
                                 <p class="text-gray-600">
-                                    <span class="font-medium text-gray-900">By:</span> {{ recipe.email }}
+                                    <span class="mr-1 font-medium text-gray-900">By:</span>
+                                    <NuxtLink
+                                        :to="{ name: 'index', query: { email: recipe.email } }"
+                                        class="underline hover:text-blue-500"
+                                        >{{ recipe.email }}</NuxtLink
+                                    >
                                 </p>
-                                <span class="text-gray-300">|</span>
+                                <span class="hidden text-gray-300 sm:inline">|</span>
                                 <p class="text-gray-600">
                                     <ClientOnly>
                                         <time :datetime="recipe.published_at">{{
@@ -48,7 +55,7 @@
                         {{ recipe.description }}
                     </p>
 
-                    <div class="mt-8">
+                    <div class="save-button-wrapper mt-8">
                         <RecipeSave :recipe="recipe" />
                     </div>
                 </div>
@@ -60,13 +67,15 @@
                                 <Tab
                                     v-slot="{ selected }"
                                     as="template"
+                                    class="flex-1 sm:flex-none"
                                 >
                                     <button
                                         :class="[
                                             selected
                                                 ? 'border-sky-600 text-sky-600'
                                                 : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
-                                            'border-b-2 px-8 py-6 text-sm font-medium whitespace-nowrap transition-colors duration-200',
+                                            'w-full border-b-2 py-6 text-center text-sm font-medium whitespace-nowrap transition-colors duration-200 sm:w-auto sm:px-8',
+                                            'focus:outline-none focus-visible:border-sky-400',
                                         ]"
                                     >
                                         Ingredients
@@ -75,13 +84,15 @@
                                 <Tab
                                     v-slot="{ selected }"
                                     as="template"
+                                    class="flex-1 sm:flex-none"
                                 >
                                     <button
                                         :class="[
                                             selected
                                                 ? 'border-sky-600 text-sky-600'
                                                 : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
-                                            'border-b-2 px-8 py-6 text-sm font-medium whitespace-nowrap transition-colors duration-200',
+                                            'w-full border-b-2 py-6 text-center text-sm font-medium whitespace-nowrap transition-colors duration-200 sm:w-auto sm:px-8',
+                                            'focus:outline-none focus-visible:border-sky-400',
                                         ]"
                                     >
                                         Steps
@@ -101,6 +112,8 @@
                     </TabGroup>
                 </div>
             </div>
+
+            <RecipeRelated :recipe="recipe" />
         </div>
     </div>
 </template>
@@ -118,3 +131,11 @@
         },
     });
 </script>
+
+<style scoped>
+    @media (max-width: 639px) {
+        .save-button-wrapper :deep(button) {
+            max-width: none;
+        }
+    }
+</style>

@@ -19,7 +19,7 @@
 <script setup>
     import { BookmarkIcon as BookmarkIconOutline } from '@heroicons/vue/24/outline';
     import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/vue/24/solid';
-    import { computed } from 'vue';
+    import { ref, onMounted } from 'vue';
     import { useSavedRecipeStore } from '~/stores/useSavedRecipeStore';
 
     const props = defineProps({
@@ -30,12 +30,12 @@
     });
 
     const recipeStore = useSavedRecipeStore();
+    const isSaved = ref(false);
 
-    const isSaved = computed(() => {
-        if (!props.recipe || !props.recipe.id) {
-            return false;
+    onMounted(() => {
+        if (props.recipe && props.recipe.id) {
+            isSaved.value = recipeStore.isRecipeSaved(props.recipe.id);
         }
-        return recipeStore.isRecipeSaved(props.recipe.id);
     });
 
     const toggleSave = () => {
@@ -44,5 +44,6 @@
         }
 
         recipeStore.toggleSavedRecipe(props.recipe);
+        isSaved.value = recipeStore.isRecipeSaved(props.recipe.id);
     };
 </script>

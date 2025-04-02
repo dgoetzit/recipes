@@ -39,7 +39,6 @@
         </div>
 
         <TabPanels as="template">
-            <!-- Top Recipes Panel -->
             <TabPanel class="px-4 pt-6 pb-8">
                 <div @click="handleLinkClick">
                     <div
@@ -70,14 +69,12 @@
                 </div>
             </TabPanel>
 
-            <!-- Saved Recipes Panel -->
             <TabPanel class="px-4 pt-6 pb-8">
                 <div @click="handleLinkClick">
                     <div
                         v-if="!isLoadingSaved && !savedError && savedRecipes.length > 0"
-                        class="mb-6 flex items-center justify-between"
+                        class="mb-6 flex items-center justify-end"
                     >
-                        <h2 class="text-lg font-medium text-gray-900">Your Saved Recipes</h2>
                         <button
                             class="clear-btn rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-100 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
                             @click.stop="clearAllSaved"
@@ -101,12 +98,15 @@
                     </div>
 
                     <div v-else>
-                        <!-- Show empty state if no saved recipes -->
                         <div
                             v-if="savedRecipes.length === 0"
                             class="py-8 text-center"
                         >
-                            <p class="text-gray-500">No saved recipes yet</p>
+                            <UiStatesEmpty
+                                title="No saved recipes"
+                                description="You haven't saved any recipes yet."
+                                emoji="🤷‍♂️"
+                            />
                         </div>
 
                         <div

@@ -1,26 +1,73 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class IngredientFactory extends Factory
 {
-
-    public function definition()
+    public function definition(): array
     {
-        $name = fake()->text(120);
-
         return [
-            'name' => $name,
+            'name' => fake()->randomElement($this->ingredients()),
         ];
     }
 
-    public function amount()
+    private function ingredients(): array
     {
-    }
-
-    public function unit()
-    {
+        return [
+            'salt',
+            'pepper',
+            'olive oil',
+            'butter',
+            'garlic',
+            'onion',
+            'flour',
+            'sugar',
+            'eggs',
+            'milk',
+            'chicken',
+            'beef',
+            'tomato',
+            'potato',
+            'carrot',
+            'celery',
+            'rice',
+            'pasta',
+            'cheese',
+            'lemon',
+            'honey',
+            'vinegar',
+            'soy sauce',
+            'cilantro',
+            'basil',
+            'thyme',
+            'oregano',
+            'cumin',
+            'cinnamon',
+            'vanilla',
+            'chocolate',
+            'mushroom',
+            'bell pepper',
+            'spinach',
+            'avocado',
+            'beans',
+            'chickpeas',
+            'yogurt',
+            'cream',
+            'broth',
+            'wine',
+            'mustard',
+            'mayonnaise',
+            'ginger',
+            'turmeric',
+            'nuts',
+            'coconut milk',
+            'lime',
+            'corn',
+            'baking powder',
+        ];
     }
 }

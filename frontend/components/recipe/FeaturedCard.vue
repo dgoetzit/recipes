@@ -3,10 +3,16 @@
         class="group relative flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:translate-y-[-4px] hover:shadow-md"
     >
         <div class="aspect-[4/3] w-full overflow-hidden">
-            <img
+            <NuxtImg
                 :src="recipe.image"
                 :alt="recipe.image_alt"
                 class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                quality="80"
+                format="webp"
+                width="200"
+                height="200"
+                placeholder
+                loading="lazy"
             />
 
             <div
@@ -73,10 +79,14 @@
     });
 
     const formattedViews = computed(() => {
+        console.log('views', props.recipe.views);
+
         const views = props.recipe.views || 0;
+
         if (views >= 1000) {
             return (views / 1000).toFixed(1) + 'K';
         }
+
         return views.toString();
     });
 

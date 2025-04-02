@@ -32,10 +32,16 @@
                     <div
                         class="relative overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
                     >
-                        <img
+                        <NuxtImg
                             :src="recipe.image"
                             :alt="recipe.image_alt"
                             class="aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover transition-transform duration-500 hover:scale-105"
+                            quality="80"
+                            format="webp"
+                            width="400"
+                            height="300"
+                            placeholder
+                            loading="lazy"
                         />
 
                         <div

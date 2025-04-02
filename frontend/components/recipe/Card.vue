@@ -1,10 +1,16 @@
 <template>
     <div class="group relative rounded-lg border border-gray-200 p-4 transition-shadow hover:shadow-md sm:p-6">
         <div class="relative">
-            <img
+            <NuxtImg
                 :src="recipe.image"
                 :alt="recipe.image_alt"
                 class="aspect-[4/3] w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75"
+                quality="80"
+                format="webp"
+                width="200"
+                height="150"
+                placeholder
+                loading="lazy"
             />
 
             <div

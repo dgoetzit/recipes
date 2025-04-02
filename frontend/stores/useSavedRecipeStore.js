@@ -29,6 +29,7 @@ export const useSavedRecipeStore = defineStore('savedRecipes', () => {
                 rating: recipe.rating,
                 reviews: recipe.reviews,
                 published_at: recipe.published_at,
+                views: recipe.views,
                 savedAt: new Date().toISOString(),
             });
 

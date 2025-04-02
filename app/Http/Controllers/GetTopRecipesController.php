@@ -10,11 +10,15 @@ use Illuminate\Http\Request;
 
 class GetTopRecipesController extends Controller
 {
+    private const DEFAULT_LIMIT = 6;
+
     public function __invoke(Request $request): JsonResponse
     {
+        $limit = (int) $request->input('limit', self::DEFAULT_LIMIT);
+
         $recipes = Recipe::query()
             ->orderBy('views', 'desc')
-            ->limit(3)
+            ->limit($limit)
             ->get();
 
         return response()->json([

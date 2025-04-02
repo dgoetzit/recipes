@@ -5,20 +5,23 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Recipe;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class SearchRecipesController extends Controller
 {
+    private const DEFAULT_LIMIT = 5;
+
     public function __invoke(Request $request): JsonResponse
     {
         $request->validate([
             'q' => 'nullable|string|min:2',
-            'limit' => 'nullable|integer|min:1|max:50',
         ]);
 
+        $limit = (int) $request->input('limit', self::DEFAULT_LIMIT);
+
         $query = Recipe::query();
-        $limit = 5;
 
         if (! $request->filled('q')) {
             $recipes = Recipe::latest()
@@ -33,16 +36,15 @@ class SearchRecipesController extends Controller
 
         $searchTerm = $request->input('q');
 
-        $query->where(function ($q) use ($searchTerm) {
-            $q->where('name', 'LIKE', "%{$searchTerm}%")
+        $query->where(function (Builder $query) use ($searchTerm) {
+            $query->where('name', 'LIKE', "%{$searchTerm}%")
                 ->orWhere('description', 'LIKE', "%{$searchTerm}%")
-                ->orWhereHas('steps', function ($query) use ($searchTerm) {
+                ->orWhereHas('steps', function (Builder $query) use ($searchTerm) {
                     $query->where('description', 'LIKE', "%{$searchTerm}%");
                 })
-                ->orWhereHas('ingredients', function ($query) use ($searchTerm) {
+                ->orWhereHas('ingredients', function (Builder $query) use ($searchTerm) {
                     $query->where('ingredients.name', 'LIKE', "%{$searchTerm}%");
-                })
-                ->orWhere('email', 'LIKE', "%{$searchTerm}%");
+                });
         });
 
         $recipes = $query->with(['ingredients', 'steps'])

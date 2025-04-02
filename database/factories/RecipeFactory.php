@@ -9,17 +9,25 @@ use Illuminate\Support\Str;
 
 class RecipeFactory extends Factory
 {
+    protected static array $sharedEmails = [];
+
     public function definition(): array
     {
         $name = $this->generateRandomRecipeName();
         $slug = Str::slug($name, '-');
 
+        if (empty(self::$sharedEmails)) {
+            for ($i = 0; $i < 10; $i++) {
+                self::$sharedEmails[] = fake()->unique()->safeEmail();
+            }
+        }
+
         return [
             'name' => $name,
             'slug' => $slug,
-            'email' => fake()->email(),
+            'email' => $this->getEmail(),
             'description' => fake()->text(1000),
-            'image' => fake()->randomElement($this->images()),
+            'image' => '/image-' . fake()->numberBetween(1, 10) . '.avif',
             'image_alt' => fake()->text(10),
             'published_at' => fake()->dateTimeBetween('-1 year', 'now'),
             'views' => fake()->numberBetween(0, 9999),
@@ -28,18 +36,16 @@ class RecipeFactory extends Factory
         ];
     }
 
-    private function images(): array
+    protected function getEmail(): string
     {
-        return [
-            'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?q=80&w=3220&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-            'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Zm9vZHxlbnwwfHwwfHx8Mg%3D%3D',
-            'https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGZvb2R8ZW58MHx8MHx8fDI%3D',
-            'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGZvb2R8ZW58MHx8MHx8fDI%3D',
-            'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        ];
+        if (fake()->boolean(50) && ! empty(self::$sharedEmails)) {
+            return fake()->randomElement(self::$sharedEmails);
+        }
+
+        return fake()->unique()->safeEmail();
     }
 
-    private function generateRandomRecipeName(): string
+    protected function generateRandomRecipeName(): string
     {
         $cookingMethods = [
             'Baked', 'Grilled', 'Roasted', 'Sautéed', 'Fried',
@@ -92,5 +98,16 @@ class RecipeFactory extends Factory
         $patternFunction = fake()->randomElement($namePatterns);
 
         return $patternFunction();
+    }
+
+    protected function images(): array
+    {
+        return [
+            'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?q=80&w=3220&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Zm9vZHxlbnwwfHwwfHx8Mg%3D%3D',
+            'https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGZvb2R8ZW58MHx8MHx8fDI%3D',
+            'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGZvb2R8ZW58MHx8MHx8fDI%3D',
+            'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        ];
     }
 }

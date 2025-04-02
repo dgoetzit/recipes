@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Recipe;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -34,13 +35,13 @@ class RecipeController extends Controller
         if ($request->filled('keyword')) {
             $keyword = $request->keyword;
 
-            $query->where(function ($q) use ($keyword) {
-                $q->where('name', 'LIKE', "%{$keyword}%")
+            $query->where(function (Builder $query) use ($keyword) {
+                $query->where('name', 'LIKE', "%{$keyword}%")
                     ->orWhere('description', 'LIKE', "%{$keyword}%")
-                    ->orWhereHas('steps', function ($query) use ($keyword) {
+                    ->orWhereHas('steps', function (Builder $query) use ($keyword) {
                         $query->where('description', 'LIKE', "%{$keyword}%");
                     })
-                    ->orWhereHas('ingredients', function ($query) use ($keyword) {
+                    ->orWhereHas('ingredients', function (Builder $query) use ($keyword) {
                         $query->where('ingredients.name', 'LIKE', "%{$keyword}%");
                     });
             });
@@ -49,8 +50,8 @@ class RecipeController extends Controller
         if ($request->filled('ingredient')) {
             $ingredient = $request->ingredient;
 
-            $query->whereHas('ingredients', function ($q) use ($ingredient) {
-                $q->where('ingredients.name', 'LIKE', "%{$ingredient}%")
+            $query->whereHas('ingredients', function (Builder $query) use ($ingredient) {
+                $query->where('ingredients.name', 'LIKE', "%{$ingredient}%")
                     ->orWhere('ingredient_recipe.measure_amount', 'LIKE', "%{$ingredient}%");
             });
         }

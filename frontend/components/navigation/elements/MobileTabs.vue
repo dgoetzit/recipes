@@ -12,7 +12,7 @@
                 >
                     <button
                         :class="[
-                            selected ? 'border-sky-600 text-sky-600' : 'border-transparent text-gray-900',
+                            selected ? 'border-green-600 text-green-600' : 'border-transparent text-gray-900',
                             'flex-1 border-b-2 px-1 py-4 text-base font-medium whitespace-nowrap',
                             'focus:ring-0 focus:outline-none',
                         ]"
@@ -27,7 +27,7 @@
                 >
                     <button
                         :class="[
-                            selected ? 'border-sky-600 text-sky-600' : 'border-transparent text-gray-900',
+                            selected ? 'border-green-600 text-green-600' : 'border-transparent text-gray-900',
                             'flex-1 border-b-2 px-1 py-4 text-base font-medium whitespace-nowrap',
                             'focus:ring-0 focus:outline-none',
                         ]"
@@ -135,37 +135,27 @@
     const recipeStore = useSavedRecipeStore();
     const activeTab = ref(0);
 
-    // Top recipes state
     const topRecipes = ref([]);
     const isLoadingTop = ref(false);
     const hasLoadedTop = ref(false);
     const topError = ref(null);
 
-    // Saved recipes state
     const savedRecipes = computed(() => recipeStore.getSavedRecipes);
     const isLoadingSaved = ref(false);
     const hasLoadedSaved = ref(false);
     const savedError = ref(null);
 
-    // Watch for tab changes to load data
     watch(activeTab, (newTabIndex) => {
         if (newTabIndex === 0) {
             if (!hasLoadedTop.value) {
                 fetchTopRecipes();
             }
-        } else if (newTabIndex === 1) {
-            if (!hasLoadedSaved.value) {
-                loadSavedRecipes();
-            }
         }
     });
 
-    // Load initial tab data
     onMounted(() => {
         if (activeTab.value === 0) {
             fetchTopRecipes();
-        } else {
-            loadSavedRecipes();
         }
     });
 
@@ -184,7 +174,6 @@
         }
     };
 
-    // Fetch top recipes from API
     const fetchTopRecipes = async () => {
         if (hasLoadedTop.value && topRecipes.value.length > 0) return;
 
@@ -203,25 +192,6 @@
         }
     };
 
-    // Load saved recipes from store
-    const loadSavedRecipes = () => {
-        isLoadingSaved.value = true;
-        savedError.value = null;
-
-        try {
-            // Simulate loading state for better UX
-            setTimeout(() => {
-                hasLoadedSaved.value = true;
-                isLoadingSaved.value = false;
-            }, 300);
-        } catch (err) {
-            console.error('Error loading saved recipes:', err);
-            savedError.value = err.message || 'An error occurred while loading saved recipes';
-            isLoadingSaved.value = false;
-        }
-    };
-
-    // Clear all saved recipes
     const clearAllSaved = () => {
         if (confirm('Are you sure you want to clear all saved recipes?')) {
             recipeStore.clearAllRecipes();
@@ -236,7 +206,7 @@
     }
 
     button:focus-visible {
-        outline: 2px solid #0284c7; /* sky-600 */
+        outline: 2px solid #0284c7; /* green-600 */
         outline-offset: 2px;
     }
 </style>

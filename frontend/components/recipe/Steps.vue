@@ -14,15 +14,15 @@
             >
                 <div
                     v-if="stepIdx !== steps.length - 1"
-                    class="absolute top-8 left-4 -ml-px h-full w-0.5 bg-sky-100"
+                    class="absolute top-8 left-4 -ml-px h-full w-0.5 bg-green-100"
                     aria-hidden="true"
                 ></div>
 
                 <div class="flex items-start">
                     <div class="relative z-10 flex-shrink-0">
                         <span
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-sky-50 text-sm font-semibold text-sky-700 ring-4 ring-white"
-                            :class="{ 'bg-sky-100': stepIdx === 0 }"
+                            class="flex h-8 w-8 items-center justify-center rounded-full bg-green-50 text-sm font-semibold text-green-700 ring-4 ring-white"
+                            :class="{ 'bg-green-100': stepIdx === 0 }"
                         >
                             {{ step.step_number }}
                         </span>

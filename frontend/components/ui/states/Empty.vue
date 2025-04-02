@@ -1,12 +1,16 @@
 <template>
-    <div>
-        <div class="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-            <span class="text-gray-600">{{ emoji }}</span>
+    <div class="empty-state py-4">
+        <div
+            class="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full border border-gray-100 bg-gray-50 shadow-sm"
+        >
+            <span class="text-3xl">{{ emoji }}</span>
         </div>
-        <h3 class="text-lg font-medium text-gray-900">
+
+        <h3 class="mb-3 text-xl font-medium text-gray-900">
             {{ title }}
         </h3>
-        <p class="mt-2 text-sm text-gray-500">
+
+        <p class="mx-auto max-w-md text-base leading-relaxed text-gray-500">
             {{ description }}
         </p>
     </div>
@@ -28,3 +32,20 @@
         },
     });
 </script>
+
+<style scoped>
+    .empty-state {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

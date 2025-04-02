@@ -7,15 +7,17 @@
         <div class="relative flex">
             <PopoverButton
                 :class="[
-                    open ? 'text-sky-600' : 'text-gray-700 hover:text-gray-800',
-                    'relative z-10 flex items-center justify-center text-sm font-medium transition-colors duration-200 ease-out',
+                    open ? 'text-green-600' : 'text-gray-700 hover:text-gray-800',
+                    'relative z-10 flex items-center justify-center text-sm font-medium transition-colors duration-200 ease-out focus:outline-none',
+                    'px-4 py-2',
                 ]"
             >
+                <StarIcon class="mr-1.5 h-5 w-5" />
                 Top Recipes
                 <span
                     :class="[
-                        open ? 'bg-sky-600' : '',
-                        'absolute inset-x-0 bottom-0 h-0.5 transition-colors duration-200 ease-out sm:mt-5 sm:translate-y-px sm:transform',
+                        open ? 'bg-green-600' : 'bg-transparent',
+                        'absolute inset-x-0 bottom-0 h-0.5 transition-colors duration-200 ease-out',
                     ]"
                     aria-hidden="true"
                 />
@@ -39,16 +41,16 @@
                 />
 
                 <div
-                    class="absolute inset-0 top-1/2 bg-white shadow"
+                    class="absolute inset-0 top-1/2 bg-white shadow-lg"
                     aria-hidden="true"
                 />
 
                 <div
-                    class="relative z-20 bg-white shadow-lg"
+                    class="relative z-20 border-t border-gray-100 bg-white shadow-xl"
                     @click="(event) => handleClick(event, close)"
                 >
-                    <div class="mx-auto max-w-7xl px-8">
-                        <div class="py-16">
+                    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div class="py-12">
                             <div
                                 v-if="isLoading"
                                 class="flex items-center justify-center py-12"
@@ -64,7 +66,8 @@
                             </div>
 
                             <div v-else>
-                                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-6">
+                                <h2 class="mb-6 text-xl font-bold text-gray-900">Featured Recipes</h2>
+                                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
                                     <RecipeFeaturedCard
                                         v-for="recipe in topRecipes"
                                         :key="recipe.id"
@@ -84,6 +87,7 @@
     import { ref } from 'vue';
     import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
     import { usePopover } from '~/composables/usePopover';
+    import { StarIcon } from '@heroicons/vue/24/solid';
 
     const { popoverRef, handleClick } = usePopover();
 

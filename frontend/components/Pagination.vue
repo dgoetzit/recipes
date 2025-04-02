@@ -6,7 +6,7 @@
         <div class="min-w-0 flex-1">
             <button
                 :disabled="props.currentPage <= 1"
-                class="inline-flex h-10 items-center rounded-md border border-gray-300 bg-white px-4 hover:bg-gray-100 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/25 focus:ring-offset-1 focus:ring-offset-sky-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                class="inline-flex h-10 items-center rounded-md border border-gray-300 bg-white px-4 hover:bg-gray-100 focus:border-green-600 focus:ring-2 focus:ring-green-600/25 focus:ring-offset-1 focus:ring-offset-green-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                 @click="changePage(props.currentPage - 1)"
             >
                 Previous
@@ -16,8 +16,8 @@
             <button
                 v-if="props.lastPage > 0"
                 :class="[
-                    props.currentPage === 1 ? 'border-sky-600 ring-1 ring-sky-600' : 'border-gray-300',
-                    'inline-flex h-10 items-center rounded-md border bg-white px-4 hover:bg-gray-100 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/25 focus:ring-offset-1 focus:ring-offset-sky-600 focus:outline-none',
+                    props.currentPage === 1 ? 'border-green-600 ring-1 ring-green-600' : 'border-gray-300',
+                    'inline-flex h-10 items-center rounded-md border bg-white px-4 hover:bg-gray-100 focus:border-green-600 focus:ring-2 focus:ring-green-600/25 focus:ring-offset-1 focus:ring-offset-green-600 focus:outline-none',
                 ]"
                 @click="changePage(1)"
             >
@@ -30,7 +30,6 @@
                 >...</span
             >
 
-            <!-- Fix: Move v-if outside of v-for element -->
             <template
                 v-for="pageNum in visiblePages"
                 :key="pageNum"
@@ -38,8 +37,8 @@
                 <button
                     v-if="pageNum !== 1 && pageNum !== props.lastPage"
                     :class="[
-                        props.currentPage === pageNum ? 'border-sky-600 ring-1 ring-sky-600' : 'border-gray-300',
-                        'inline-flex h-10 items-center rounded-md border bg-white px-4 hover:bg-gray-100 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/25 focus:ring-offset-1 focus:ring-offset-sky-600 focus:outline-none',
+                        props.currentPage === pageNum ? 'border-green-600 ring-1 ring-green-600' : 'border-gray-300',
+                        'inline-flex h-10 items-center rounded-md border bg-white px-4 hover:bg-gray-100 focus:border-green-600 focus:ring-2 focus:ring-green-600/25 focus:ring-offset-1 focus:ring-offset-green-600 focus:outline-none',
                     ]"
                     @click="changePage(pageNum)"
                 >
@@ -56,8 +55,8 @@
             <button
                 v-if="props.lastPage > 1"
                 :class="[
-                    props.currentPage === props.lastPage ? 'border-sky-600 ring-1 ring-sky-600' : 'border-gray-300',
-                    'inline-flex h-10 items-center rounded-md border bg-white px-4 hover:bg-gray-100 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/25 focus:ring-offset-1 focus:ring-offset-sky-600 focus:outline-none',
+                    props.currentPage === props.lastPage ? 'border-green-600 ring-1 ring-green-600' : 'border-gray-300',
+                    'inline-flex h-10 items-center rounded-md border bg-white px-4 hover:bg-gray-100 focus:border-green-600 focus:ring-2 focus:ring-green-600/25 focus:ring-offset-1 focus:ring-offset-green-600 focus:outline-none',
                 ]"
                 @click="changePage(props.lastPage)"
             >
@@ -68,7 +67,7 @@
         <div class="flex min-w-0 flex-1 justify-end">
             <button
                 :disabled="props.currentPage >= props.lastPage"
-                class="inline-flex h-10 items-center rounded-md border border-gray-300 bg-white px-4 hover:bg-gray-100 focus:border-sky-600 focus:ring-2 focus:ring-sky-600/25 focus:ring-offset-1 focus:ring-offset-sky-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                class="inline-flex h-10 items-center rounded-md border border-gray-300 bg-white px-4 hover:bg-gray-100 focus:border-green-600 focus:ring-2 focus:ring-green-600/25 focus:ring-offset-1 focus:ring-offset-green-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                 @click="changePage(props.currentPage + 1)"
             >
                 Next

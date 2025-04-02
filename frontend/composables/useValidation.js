@@ -1,4 +1,3 @@
-// composables/useValidation.js
 import { ref, computed } from 'vue';
 
 export function useValidation(initialValue = '', rules = []) {

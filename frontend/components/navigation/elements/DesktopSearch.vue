@@ -52,7 +52,7 @@
                                     <div class="absolute top-0 right-0 pt-4 pr-4">
                                         <button
                                             type="button"
-                                            class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:outline-none"
+                                            class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-none"
                                             @click="closeModal"
                                         >
                                             <span class="sr-only">Close</span>
@@ -99,7 +99,7 @@
                                                                 v-model="searchQuery"
                                                                 type="text"
                                                                 name="search"
-                                                                class="block w-full rounded-md border-gray-300 py-3 pl-10 text-base focus:border-sky-500 focus:ring-sky-500"
+                                                                class="block w-full rounded-md border-gray-300 py-3 pl-10 text-base focus:border-green-500 focus:ring-green-500"
                                                                 placeholder="Search for a recipe by name or ingredients"
                                                                 @input="debouncedSearch"
                                                             />
@@ -151,7 +151,7 @@
                                                         >
                                                             <NuxtLink
                                                                 :to="`/?keyword=${encodeURIComponent(searchQuery)}`"
-                                                                class="text-sm font-medium text-sky-600 hover:text-sky-500"
+                                                                class="text-sm font-medium text-green-600 hover:text-green-500"
                                                                 @click="closeModal"
                                                             >
                                                                 View all results
@@ -162,14 +162,14 @@
                                                     <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                                                         <button
                                                             type="submit"
-                                                            class="inline-flex w-full justify-center rounded-md border border-transparent bg-sky-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-sky-700 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
+                                                            class="inline-flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
                                                             :disabled="searchQuery.length < 2"
                                                         >
                                                             Search
                                                         </button>
                                                         <button
                                                             type="button"
-                                                            class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:outline-none sm:mt-0 sm:w-auto sm:text-sm"
+                                                            class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-none sm:mt-0 sm:w-auto sm:text-sm"
                                                             @click="closeModal"
                                                         >
                                                             Cancel

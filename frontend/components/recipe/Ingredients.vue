@@ -16,7 +16,7 @@
                             {{ ingredient.name }}
                         </p>
                         <p
-                            class="mt-0.5 rounded-md bg-sky-50 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-sky-700 ring-1 ring-sky-200 ring-inset"
+                            class="mt-0.5 rounded-md bg-green-50 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-green-700 ring-1 ring-green-200 ring-inset"
                         >
                             {{ ingredient.pivot.measure_amount }}
                             {{ ingredient.pivot.measure_unit }}
@@ -24,7 +24,6 @@
                     </div>
                 </div>
                 <div class="flex flex-none items-center gap-x-4">
-                    <!-- Future functionality for suggested recipes -->
                     <button
                         class="rounded-full p-1 text-gray-400 transition-colors duration-150 hover:text-gray-500"
                         title="Find similar recipes"

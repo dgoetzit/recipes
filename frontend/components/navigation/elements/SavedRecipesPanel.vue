@@ -7,15 +7,17 @@
         <div class="relative flex">
             <PopoverButton
                 :class="[
-                    open ? 'text-sky-600' : 'text-gray-700 hover:text-gray-800',
-                    'relative z-10 flex items-center justify-center text-sm font-medium transition-colors duration-200 ease-out',
+                    open ? 'text-green-600' : 'text-gray-700 hover:text-gray-800',
+                    'relative z-10 flex items-center justify-center text-sm font-medium transition-colors duration-200 ease-out focus:outline-none',
+                    'px-4 py-2',
                 ]"
             >
+                <BookmarkIcon class="mr-1.5 h-5 w-5" />
                 Saved Recipes
                 <span
                     :class="[
-                        open ? 'bg-sky-600' : '',
-                        'absolute inset-x-0 bottom-0 h-0.5 transition-colors duration-200 ease-out sm:mt-5 sm:translate-y-px sm:transform',
+                        open ? 'bg-green-600' : 'bg-transparent',
+                        'absolute inset-x-0 bottom-0 h-0.5 transition-colors duration-200 ease-out',
                     ]"
                     aria-hidden="true"
                 />
@@ -32,22 +34,22 @@
         >
             <PopoverPanel class="absolute inset-x-0 top-full z-20">
                 <div
-                    class="absolute inset-0 top-1/2 bg-white shadow"
+                    class="absolute inset-0 top-1/2 bg-white shadow-lg"
                     aria-hidden="true"
                 />
 
                 <div
-                    class="relative z-20 bg-white shadow-lg"
+                    class="relative z-20 border-t border-gray-100 bg-white shadow-xl"
                     @click="(event) => handleClick(event, close)"
                 >
-                    <div class="mx-auto max-w-7xl px-8">
-                        <div class="py-16">
-                            <div
-                                v-if="!isLoading && !error && savedRecipes.length > 0"
-                                class="mb-6 flex items-center justify-end"
-                            >
+                    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div class="py-12">
+                            <div class="mb-6 flex items-center justify-between">
+                                <h2 class="text-xl font-bold text-gray-900">Your Saved Recipes</h2>
+
                                 <button
-                                    class="clear-btn rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-100 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
+                                    v-if="!isLoading && !error && savedRecipes.length > 0"
+                                    class="rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-100 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
                                     @click="clearAllSaved"
                                 >
                                     Clear All
@@ -75,14 +77,14 @@
                                 >
                                     <UiStatesEmpty
                                         title="No saved recipes"
-                                        description="You haven't saved any recipes yet."
+                                        description="You haven't saved any recipes yet. Browse recipes and click the save button to add them here."
                                         emoji="🤷‍♂️"
                                     />
                                 </div>
 
                                 <div
                                     v-else
-                                    class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-6"
+                                    class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3"
                                 >
                                     <RecipeFeaturedCard
                                         v-for="recipe in savedRecipes"
@@ -104,6 +106,7 @@
     import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
     import { usePopover } from '~/composables/usePopover';
     import { useSavedRecipeStore } from '~/stores/useSavedRecipeStore';
+    import { BookmarkIcon } from '@heroicons/vue/24/solid';
 
     const { popoverRef, handleClick } = usePopover();
 

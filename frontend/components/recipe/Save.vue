@@ -2,14 +2,16 @@
     <button
         type="button"
         :class="[
-            'flex w-full max-w-xs items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium transition-colors duration-200 focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none',
-            isSaved ? 'bg-sky-100 text-sky-800 hover:bg-sky-200' : 'bg-sky-50 text-sky-700 hover:bg-sky-100',
+            'flex w-full max-w-xs items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium transition-colors duration-200 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-none',
+            isSaved
+                ? 'bg-green-100 text-green-800 hover:bg-green-200'
+                : 'bg-green-50 text-green-700 hover:bg-green-100',
         ]"
         @click="toggleSave"
     >
         <component
             :is="isSaved ? BookmarkIconSolid : BookmarkIconOutline"
-            class="mr-2 h-5 w-5 flex-shrink-0 text-sky-500"
+            class="mr-2 h-5 w-5 flex-shrink-0 text-green-500"
             aria-hidden="true"
         />
         <span>{{ isSaved ? 'Saved' : 'Save' }}</span>
